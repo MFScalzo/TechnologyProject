@@ -1,2 +1,10 @@
 /.bsp/
 target/
+/.bsp/
+target/
+/.bloop/
+/.metals
+**/.bloop/
+**/.metals
+.metals/
+metlas.mv.db
