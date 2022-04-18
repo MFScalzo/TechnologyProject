@@ -75,4 +75,6 @@ node_modules/
 package-lock.json
 .metals/
 *.lock
+*.lock.db
+*.mv.db
 benchmark-bridge/corpus/
