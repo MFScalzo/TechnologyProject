@@ -56,6 +56,7 @@ bin/.scalafmt*
 
 target/
 .bloop/
+/.bloop
 .bsp/
 
 # Ensime's config and cache
@@ -73,7 +74,7 @@ website/build/
 website/build/bloop-gh-pages/
 node_modules/
 package-lock.json
-.metals/
+/.metals
 *.lock
 *.lock.db
 *.mv.db

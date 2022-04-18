@@ -1,5 +1,6 @@
 /.bsp/
 target/
+<<<<<<< HEAD
 /.bsp/
 target/
 /.bloop/
@@ -8,3 +9,9 @@ target/
 **/.metals
 .metals/
 metlas.mv.db
+=======
+/.bloop/
+/.metals
+**/.bloop/
+**/.metals
+>>>>>>> e21685d (Fix for .gitignore)
