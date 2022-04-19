@@ -25,9 +25,8 @@ class Product {
         
         val productCount = productList.length    
         val r = scala.util.Random
-        val current_product = r.nextInt(productCount) //returns a number from 1-n where n is the no. of products in productList.
-        val product_info = productList
-        product_info(current_product)
+        val current_product = r.nextInt(productCount) //returns a number from 0-n where n is the no. of products in productList.
+        productList(current_product)
     }
 }
 
