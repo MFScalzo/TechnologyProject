@@ -10,7 +10,7 @@ class Product {
         ("Electronics", "S95B OLED 4K Smart TV (2022)", 2199.99, 2), 
         ("Electronics", "LG Eectronics 33in. 25 cu. ft. 3-Door French Door Refridgerator in PrintProof Stainless Steel", 2099, 3),  
         ("Electronics", "MacBook Pro 14\" Laptop - Apple M1 Pro chip - 16GB Memory - 1TB SSD (Latest ModeL) - Space Gray", 2499.00, 4),
-        ("Electronics", "Sony - PlayStation 5 Console", "$499.00", 5), 
+        ("Electronics", "Sony - PlayStation 5 Console", 499.00, 5), 
         ("Bedding", "Nestwell Pure Earth Organic Cotton 3-Piece Full/Queen Comforter Set in White", 170.00, 6), 
         ("Bedding", "Simply Essential™ Adjustable Memory Foam Standard/Queen Bed Pillow", 15.00, 7), 
         ("Bedding", "Nestwell Supreme Softness Plush Full/Queen Blanket in Pebble Grey", 55.00, 8), 
