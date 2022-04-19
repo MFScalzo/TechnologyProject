@@ -5,7 +5,7 @@ It contains one function in the Product class which returns one random product w
 */
 class Product {
     def generateProductInfo: Any = {
-        val productList = List(
+        val productList = Vector(
         ("Electronics", "iPhone 13 Pro Max", "$1099", 1), 
         ("Electronics", "S95B OLED 4K Smart TV (2022)", "$2199.99", 2), 
         ("Electronics", "LG Eectronics 33in. 25 cu. ft. 3-Door French Door Refridgerator in PrintProof Stainless Steel", "$2099", 3),  
@@ -22,11 +22,10 @@ class Product {
         ("Pet Supplies", "Purina Pro Plan Complete Essentials Adult Dry Dog Food - High Protein, Probiotics, Lamb & Rice", "$42.99", 14), 
         ("Pet Supplies", "Top Paw Spiky Football Dog Toy - Squeaker", "$2.99", 15)
         )
-        val productCount = productList.length
-            
-            
+        
+        val productCount = productList.length    
         val r = scala.util.Random
-        val current_product = (r.nextInt(productCount) + 1) //returns a number from 1-n where n is the no. of products in productList. Adding one because tuples are 1-indexed
+        val current_product = (r.nextInt(productCount) ) //returns a number from 1-n where n is the no. of products in productList.
         val product_info = productList
         product_info(current_product)
     }
