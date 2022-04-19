@@ -7,4 +7,4 @@ target/
 **/.bloop/
 **/.metals
 .metals/
-metlas.mv.db
+metals.mv.db
