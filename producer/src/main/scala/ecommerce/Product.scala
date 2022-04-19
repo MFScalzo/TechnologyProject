@@ -22,10 +22,9 @@ class Product {
         ("Pet Supplies", "Purina Pro Plan Complete Essentials Adult Dry Dog Food - High Protein, Probiotics, Lamb & Rice", 42.99, 14), 
         ("Pet Supplies", "Top Paw Spiky Football Dog Toy - Squeaker", 2.99, 15)
         )
-        
-        val productCount = productList.length    
+           
         val r = scala.util.Random
-        val current_product = r.nextInt(productCount) //returns a number from 0-n where n is the no. of products in productList.
+        val current_product = r.nextInt(productList.length) //returns a number from 0-n where n is the no. of products in productList.
         productList(current_product)
     }
 }
