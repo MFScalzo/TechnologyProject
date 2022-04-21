@@ -21,27 +21,30 @@ class Order {
     //     ("Electronics", "MacBook Pro Space Gray", 2499.00, 4),
     //     ("Electronics", "Sony - PlayStation 5 Console", 499.00, 5))
 
-    def GenerateProductList(r: Int): List[String] = {            //Creates a product a random number of times
-        var orderProducts = new ListBuffer[String]()             //Will need to know number and kind of entries
+    def GenerateProductList(r: Int): Vector[(String, String, Float, Int, Int)] = {            //Creates a product a random number of times
+        var orderProducts = new ListBuffer[Tuple5[String, String, Float, Int, Int]]()             //Will need to know number and kind of entries
         for(i <- 0 to r) {                                              
             var a = scala.util.Random
             var orderQTY = a.nextInt(10) + 1                //Creates random qty
-            orderProducts += (productGenerator.generateProductInfo() + orderQTY.toString)     //Creates product + qty
+            val product = productGenerator.generateProductInfo     //Creates product + qty
             //orderProducts += (productList(i) + orderQTY.toString)           //Line used for testing
+            orderProducts += Tuple5(product._1, product._2, product._3.toFloat, product._4, orderQTY)
+
         }
-        var order_Products = orderProducts.toList
+        var order_Products = orderProducts.toVector
         return order_Products
     }
 
-    def GenerateOrderInfo(): (List[String], Any, Any, Int) = {           //Generation of one order at a time
+    def GenerateOrderInfo(): (Vector[(String, String, Float, Int, Int)], String, String, Int) = {           //Generation of one order at a time
         var r = scala.util.Random                  //Random Number of Products
+
         var products_ordered = GenerateProductList(r.nextInt(5))      //Get List of Products + Qty
-        var x = scala.util.Random
-        var y = scala.util.Random
-        var ranPayment = payment.productElement(x.nextInt(5))     //Select random Payment Type
-        var ranWebsite = web.productElement(y.nextInt(5))        //Select random Website
+        var ranPayment = payment.productElement(r.nextInt(5)).toString     //Select random Payment Type
+        var ranWebsite = web.productElement(r.nextInt(5)).toString        //Select random Website
+
         val order = (products_ordered, ranPayment, ranWebsite, order_id)
         IncOrderID()
+
         return order
     }
 }
