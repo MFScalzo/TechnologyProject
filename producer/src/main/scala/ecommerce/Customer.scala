@@ -1,5 +1,7 @@
 package ecommerce
 
+import scala.util.Random
+
 class Customer {
   val Names = List(
     ("John Appleseed"),
@@ -39,7 +41,7 @@ class Customer {
 
   var nextCustomerID: Int = 1
 
-  def GenerateCustomerInfo(): Tuple4[String, String, String, Int] = {
+  def generateCustomerInfo(): Tuple4[String, String, String, Int] = {
     val getName = Names(Random.nextInt(Names.length))
     val getLocation = Location(Random.nextInt(Location.length))
     val customer = (getName, getLocation._1, getLocation._2, nextCustomerID)
