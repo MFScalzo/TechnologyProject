@@ -4,7 +4,7 @@ The Product.scala file is where the products list is managed and includes all pr
 It contains one function in the Product class which returns one random product when called.
 */
 class Product {
-    def generateProductInfo: Any = {
+    def generateProductInfo: Tuple4[String, String, Float, Int] = {
         val productList = Vector(
         ("Electronics", "iPhone 13 Pro Max", 1099.00f, 1), 
         ("Electronics", "S95B OLED 4K Smart TV (2022)", 2199.99f, 2), 
