@@ -5,12 +5,12 @@ import scala.collection.mutable.ListBuffer
 //import scala.compiletime.ops.string
 
 class Order {
-    val payment = ("Visa", "Master Card", "Discover", "PayPal", "ApplePay")
-    val web = ("www.Amazon.com", "www.BestBuy.com", "www.Walmart.com", "www.Ebay.com", "www.Etsy.com")
+    val paymentOptions = Vector("Visa", "Master Card", "Discover", "PayPal", "ApplePay")
+    val websites = Vector("www.Amazon.com", "www.BestBuy.com", "www.Walmart.com", "www.Ebay.com", "www.Etsy.com")
     var order_id = 1     
     val productGenerator = new Product()
 
-    def IncOrderID(): Unit = {              //Increment Order_ID to make sure unique values are used
+    def incOrderID(): Unit = {              //Increment Order_ID to make sure unique values are used
         order_id = order_id + 1
     }
 
@@ -21,7 +21,7 @@ class Order {
     //     ("Electronics", "MacBook Pro Space Gray", 2499.00, 4),
     //     ("Electronics", "Sony - PlayStation 5 Console", 499.00, 5))
 
-    def GenerateProductList(r: Int): Vector[(String, String, Float, Int, Int)] = {            //Creates a product a random number of times
+    def generateProductList(r: Int): Vector[(String, String, Float, Int, Int)] = {            //Creates a product a random number of times
         var orderProducts = new ListBuffer[Tuple5[String, String, Float, Int, Int]]()             //Will need to know number and kind of entries
         for(i <- 0 to r) {                                              
             var a = scala.util.Random
@@ -31,19 +31,19 @@ class Order {
             orderProducts += Tuple5(product._1, product._2, product._3.toFloat, product._4, orderQTY)
 
         }
-        var order_Products = orderProducts.toVector
-        return order_Products
+
+        return orderProducts.toVector
     }
 
-    def GenerateOrderInfo(): (Vector[(String, String, Float, Int, Int)], String, String, Int) = {           //Generation of one order at a time
+    def generateOrderInfo(): Tuple4[Vector[Tuple5[String, String, Float, Int, Int]], String, String, Int] = {           //Generation of one order at a time
         var r = scala.util.Random                  //Random Number of Products
 
-        var products_ordered = GenerateProductList(r.nextInt(5))      //Get List of Products + Qty
-        var ranPayment = payment.productElement(r.nextInt(5)).toString     //Select random Payment Type
-        var ranWebsite = web.productElement(r.nextInt(5)).toString        //Select random Website
+        var products_ordered = generateProductList(r.nextInt(5) + 1)      //Get List of Products + Qty
+        var ranPayment = paymentOptions(r.nextInt(paymentOptions.length)).toString    //Select random Payment Type
+        var ranWebsite = websites(r.nextInt(websites.length)).toString        //Select random Website       //Select random Website
 
-        val order = (products_ordered, ranPayment, ranWebsite, order_id)
-        IncOrderID()
+        val order = Tuple4(products_ordered, ranPayment, ranWebsite, order_id)
+        incOrderID()
 
         return order
     }
