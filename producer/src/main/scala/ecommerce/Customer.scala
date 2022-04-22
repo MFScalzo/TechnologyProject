@@ -3,7 +3,7 @@ package ecommerce
 import scala.util.Random
 
 class Customer {
-  val Names = List(
+  val names = List(
     ("John Appleseed"),
     ("Inayah Kaiser"),
     ("Gabriel Lawrence"),
@@ -21,7 +21,7 @@ class Customer {
     ("Adrienne Penn")
   )
 
-  val Location = List(
+  val locations = List(
     ("Miami", "United States"),
     ("Boston", "United States"),
     ("New York", "United States"),
@@ -36,14 +36,14 @@ class Customer {
     ("Ottawa", "Canada"),
     ("Windsor", "Canada"),
     ("Caracas", "Venezuela"),
-    ("La Asunción", "Venezuela")
+    ("La Asuncion", "Venezuela")    // Sadly I had to remove the ó due to formatting problems :(
   )
 
   var nextCustomerID: Int = 1
 
   def generateCustomerInfo(): Tuple4[String, String, String, Int] = {
-    val getName = Names(Random.nextInt(Names.length))
-    val getLocation = Location(Random.nextInt(Location.length))
+    val getName = names(Random.nextInt(names.length))
+    val getLocation = locations(Random.nextInt(locations.length))
     val customer = (getName, getLocation._1, getLocation._2, nextCustomerID)
     // println(customer)
     nextCustomerID += 1
