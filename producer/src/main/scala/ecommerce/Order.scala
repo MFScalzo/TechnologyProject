@@ -14,20 +14,12 @@ class Order {
         order_id = order_id + 1
     }
 
-    // val productList = Vector(                                        //Sample Products for testing
-    //     ("Electronics", "iPhone 13 Pro Max", 1099.00, 1), 
-    //     ("Electronics", " 4K Smart TV (2022)", 2199.99, 2), 
-    //     ("Electronics", "LG Refridgerator Stainless Steel", 2099, 3),  
-    //     ("Electronics", "MacBook Pro Space Gray", 2499.00, 4),
-    //     ("Electronics", "Sony - PlayStation 5 Console", 499.00, 5))
-
     def generateProductList(r: Int): Vector[(String, String, Float, Int, Int)] = {            //Creates a product a random number of times
         var orderProducts = new ListBuffer[Tuple5[String, String, Float, Int, Int]]()             //Will need to know number and kind of entries
         for(i <- 0 to r) {                                              
             var a = scala.util.Random
             var orderQTY = a.nextInt(10) + 1                //Creates random qty
             val product = productGenerator.generateProductInfo     //Creates product + qty
-            //orderProducts += (productList(i) + orderQTY.toString)           //Line used for testing
             orderProducts += Tuple5(product._1, product._2, product._3.toFloat, product._4, orderQTY)
 
         }
@@ -48,12 +40,3 @@ class Order {
         return order
     }
 }
-// object Test extends Order {                             //Code used for testing by itself
-    
-//     def main(args: Array[String]): Unit = {
-//         for(i <- 0 to 3){
-//             val order = GenerateOrderInfo()
-//             println(order)
-//         }
-//     }
-// }
