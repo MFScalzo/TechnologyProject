@@ -22,7 +22,7 @@ class HiveClient {
 
         }
         catch {
-            
+            pass
         }
     }
 }
