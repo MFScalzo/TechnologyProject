@@ -1,17 +1,21 @@
+// Run on VM as: spark-submit ./testing_2.11-0.1.0-SNAPSHOT.jar  --class ecommerce.Ecommerce
 package ecommerce
 
 import scala.util.Random
-import ecommerce.{Order, Customer}
+import ecommerce.{Order, Customer, HiveClient}
 import java.io._
 import scala.collection.mutable.ArrayBuffer
 
 object Ecommerce {
     val orderGenerator = new Order()
     val customerGenerator = new Customer()
+    val hive = new HiveClient()
     var currentTransactionID = 1
     val failureReason = List("Invalid Card Number", "Payment Declined", "Transaction Error", "Insufficient Funds")
     val maxCustomers = 10
     val maxOrdersPerCustomer = 3
+    val csvPath = "/home/maria_dev/ecommerce/vanquish/vanquishData.csv"
+    val hdfsPath = "hdfs://sandbox-hdp.hortonworks.com:8020/user/maria_dev/vanquishData.csv"
     
     def main(args: Array[String]) {
         val rad = new scala.util.Random
@@ -43,11 +47,15 @@ object Ecommerce {
         println("Writing Data to CSV...")
         appendRowsToCSV(rowsOfData)
 
-        println("Uploading CSV to HDFS...")
+        println(s"Uploading $csvPath to HDFS...")
+        hive.loadIntoHDFS(csvPath, hdfsPath)
+
+        println("Loading into Hive...")
+        hive.loadIntoHive("/user/maria_dev/")
     }
 
     def appendRowsToCSV(rows: ArrayBuffer[String]): Unit = {
-        val file = new File("./vanquishData.csv")
+        val file = new File(csvPath)
         val bw = new BufferedWriter(new FileWriter(file))
 
         for(row <- rows) {
@@ -81,6 +89,15 @@ object Ecommerce {
         val firstMinute = 0
         val lastMinute = 59
         val randomMinute = firstMinute + r.nextInt( (lastMinute - firstMinute))
+
+        // SO, Hive only supports timestamps in the format YYYY-MM-DD HH:mm:SS and right now we don't have seconds so it doesn't recognize it as a timestamp data type, 
+        // for now I'm just going to keep it as a type string on hive but if we want to use the timestamp format we have to add seonds position...
+        // https://sparkbyexamples.com/apache-hive/hive-date-and-timestamp-functions-examples/
+        // personally I blame whoever came up with the schema, but ehhh whatever
+        // you just have to convert after the fact
+        // val firstSecond = 0
+        // val lastSecond = 59
+        // val randomSecond = firstSecond + r.nextInt( (lastSecond - firstSecond))
 
         return f"$randomYear-$randomMonth-$randomDay $randomHour%02d:$randomMinute%02d"
     }
