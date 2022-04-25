@@ -1,4 +1,4 @@
-// Run on VM as: spark-submit ./testing_2.11-0.1.0-SNAPSHOT.jar  --class ecommerce.Ecommerce
+// Run on VM as: spark-submit ./producer_2.11-0.1.0-SNAPSHOT.jar  --class ecommerce.Ecommerce
 package ecommerce
 
 import scala.util.Random
