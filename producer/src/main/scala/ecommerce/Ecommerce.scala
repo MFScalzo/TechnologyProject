@@ -12,14 +12,15 @@ object Ecommerce {
     val hive = new HiveClient()
     var currentTransactionID = 1
     val failureReason = List("Invalid Card Number", "Payment Declined", "Transaction Error", "Insufficient Funds")
-    val maxCustomers = 10
+    val minCustomers = 1500
+    val maxCustomers = 2000
     val maxOrdersPerCustomer = 3
     val csvPath = "/home/maria_dev/ecommerce/vanquish/vanquishData.csv"
     val hdfsPath = "hdfs://sandbox-hdp.hortonworks.com:8020/user/maria_dev/vanquishData.csv"
     
     def main(args: Array[String]) {
         val rad = new scala.util.Random
-        val numberOfCustomers = rad.nextInt(maxCustomers)
+        val numberOfCustomers = minCustomers + rad.nextInt(maxCustomers - minCustomers)
         var rowsOfData = ArrayBuffer[String]()
 
         println("Generating Data...")
