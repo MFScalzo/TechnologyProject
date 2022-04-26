@@ -3,21 +3,23 @@ package ecommerce
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types._
 
-class Analysis2(spark: SparkSession) {
+import java.io.IOException
+import scala.util.Try
+import java.sql.Connection
+import java.sql.Statement
+import java.sql.DriverManager
+
+class Analysis2(spark: SparkSession, hiveStatement: Statement) {
     val sc = spark.sparkContext
     val sqlHiveContext = new org.apache.spark.sql.hive.HiveContext(sc)
 
-    val tableDF = spark.read
-        .option("header", true)
-        .option("inferSchema", true)
-        .csv("/user/maria_dev/alchemyData.csv")
-
     def highestRevenueByCountry() {
-
+        val query = s"SELECT country, sum((qty * price)) from alchemy "
     }
 
     def highestRevenueByCountryHive() {
-
+        var query = s""
+        hiveStatement.execute(query)
     }
 
     def mostPopularDay() {
