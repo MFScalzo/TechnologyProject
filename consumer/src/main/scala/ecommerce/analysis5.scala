@@ -13,16 +13,20 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
     val sc = spark.sparkContext
     val sqlHiveContext = new org.apache.spark.sql.hive.HiveContext(sc)
     
+    val db = "project2"
+    val table = "alchemy"
+
+    sqlHiveContext.sql(s"USE $db")
 
     def paymentFailPercent(): Unit = {
         //Count Number of TXN that Pass
-        var queryP = """SELECT COUNT(payment_txn_sucess) as passCount
-                    FROM alchemy
+        var queryP = s"""SELECT COUNT(payment_txn_sucess) as passCount
+                    FROM $table
                     WHERE payment_txn_sucess = 'Y';"""
 
         //Count Number of TXN that Fail
-        var queryF = """SELECT COUNT(payment_txn_sucess) as failCount
-                    FROM alchemy
+        var queryF = s"""SELECT COUNT(payment_txn_sucess) as failCount
+                    FROM $table
                     WHERE payment_txn_sucess = 'N';"""
 
         var passAmount: Int = sqlHiveContext.sql(queryP).first.getInt(0)            //Get Pass as Int type
@@ -34,21 +38,21 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
 
     def commonPaymentFail(): Unit = {
         var commonFailure = " "
-        var queryList = "SELECT DISTINCT failure_reason FROM table;"		//Get Unique Failure Reasons
+        var queryList = s"SELECT DISTINCT failure_reason FROM $table;"		//Get Unique Failure Reasons
 
         var listReasons = sqlHiveContext.sql(queryList).rdd.map(r=>r.toString()).collect()
         var count = 0
         for(reason <- listReasons){
-            var query = """SELECT COUNT(failure_reason)
-                        FROM table
-                        WHERE failure_reason = s'${reason}'"""
+            var query = s"""SELECT COUNT(failure_reason)
+                        FROM $table
+                        WHERE failure_reason = '$reason'"""
             var temp = sqlHiveContext.sql(query).first.getInt(0)
             if(temp > count){
                 count = temp
                 commonFailure = reason
             }
         }
-        println("The most common reason for transaction error is: ", commonFailure)
+        println(s"The most common reason for transaction error is: $commonFailure")
     }
 
  }
