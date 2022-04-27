@@ -16,7 +16,7 @@ object Ecommerce {
     val maxCustomers = 2000
     val maxOrdersPerCustomer = 3
     val csvPath = "/home/maria_dev/ecommerce/vanquish/vanquishData.csv"
-    val hdfsPath = "hdfs://sandbox-hdp.hortonworks.com:8020/user/maria_dev/vanquishData.csv"
+    val hdfsPath = "hdfs://sandbox-hdp.hortonworks.com:8020/user/maria_dev/vanquish/vanquishData.csv"
     
     def main(args: Array[String]) {
         val rad = new scala.util.Random
@@ -52,7 +52,7 @@ object Ecommerce {
         hive.loadIntoHDFS(csvPath, hdfsPath)
 
         println("Loading into Hive...")
-        hive.loadIntoHive("/user/maria_dev/")
+        hive.loadIntoHive("/user/maria_dev/vanquish/")
     }
 
     def appendRowsToCSV(rows: ArrayBuffer[String]): Unit = {
