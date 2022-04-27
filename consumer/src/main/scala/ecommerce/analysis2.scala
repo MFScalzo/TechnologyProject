@@ -13,7 +13,7 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement) {
     val sc = spark.sparkContext
     val sqlHiveContext = new org.apache.spark.sql.hive.HiveContext(sc)
 
-    val databaseName = "project2"
+    val databaseName = "ecommerce"
     val tableName = "alchemy"
 
     sqlHiveContext.sql(s"USE $databaseName")
