@@ -29,7 +29,7 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement) {
     }
 
     def highestRevenueByCountryHive() {
-        var query = s"""SELECT country, SUM(qty * price) as revenue
+        val query = s"""SELECT country, SUM(qty * price) as revenue
                         FROM $tableName
                         GROUP BY country
                         ORDER BY revenue DESC LIMIT 1;""""
