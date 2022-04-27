@@ -17,6 +17,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
     val table = "alchemy"
 
     sqlHiveContext.sql(s"USE $db")
+    hiveStatement.execute(s"USE $db")
 
     def paymentFailPercent(): Unit = {
         //Count Number of TXN that Pass
@@ -29,30 +30,66 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
                     FROM $table
                     WHERE payment_txn_sucess = 'N';"""
 
+        var pass = sqlHiveContext.sql(queryP).show()
+        var fail = sqlHiveContext.sql(queryF).show()
         var passAmount: Int = sqlHiveContext.sql(queryP).first.getInt(0)            //Get Pass as Int type
         var failAmount: Int = sqlHiveContext.sql(queryF).first.getInt(0)            //Get Fail as Int type
         var failPercent: Float = (failAmount / (passAmount + failAmount))*100       //Calculate the Fail Percent as Float type
         
         println(s"Transactions fail ${failPercent}% of the time.")
     }
+    
+    // def paymentFailPercentHive(): Unit = {
+    //     //Count Number of TXN that Pass
+    //     var queryP = s"""SELECT COUNT(payment_txn_sucess) as passCount
+    //                 FROM $table
+    //                 WHERE payment_txn_sucess = 'Y';"""
+
+    //     //Count Number of TXN that Fail
+    //     var queryF = s"""SELECT COUNT(payment_txn_sucess) as failCount
+    //                 FROM $table
+    //                 WHERE payment_txn_sucess = 'N';"""
+
+    //     var pass = sqlHiveContext.sql(queryP)
+    //     if(pass.next()){
+    //         System.out.println(pass.getString(1))
+    //     }
+    //     var fail = sqlHiveContext.sql(queryF)
+    //     if(fail.next()){
+    //         System.out.println(fail.getString(1))
+    //     }
+    //     var passAmount: Int = sqlHiveContext.sql(queryP).first.getInt(0)            //Get Pass as Int type
+    //     var failAmount: Int = sqlHiveContext.sql(queryF).first.getInt(0)            //Get Fail as Int type
+    //     var failPercent: Float = (failAmount / (passAmount + failAmount))*100       //Calculate the Fail Percent as Float type
+        
+    //     println(s"Transactions fail ${failPercent}% of the time.")
+    // }
 
     def commonPaymentFail(): Unit = {
         var commonFailure = " "
-        var queryList = s"SELECT DISTINCT failure_reason FROM $table;"		//Get Unique Failure Reasons
+        var queryList = s"""SELECT failure_reason, COUNT(failure_reason)
+                          FROM $table
+                          GROUP BY failure_reason
+                          ORDER BY COUNT(failure_reason) DESC;"""		//Get Unique Failure Reasons
 
-        var listReasons = sqlHiveContext.sql(queryList).rdd.map(r=>r.toString()).collect()
-        var count = 0
-        for(reason <- listReasons){
-            var query = s"""SELECT COUNT(failure_reason)
-                        FROM $table
-                        WHERE failure_reason = '$reason'"""
-            var temp = sqlHiveContext.sql(query).first.getInt(0)
-            if(temp > count){
-                count = temp
-                commonFailure = reason
-            }
-        }
-        println(s"The most common reason for transaction error is: $commonFailure")
+        var listReasons = sqlHiveContext.sql(queryList).show()
+        
+        //println(s"The most common reason for transaction error is: $commonFailure")
     }
+
+    // def commonPaymentFailHive(): Unit = {
+    //     var commonFailure = " "
+    //     var queryList = s"""SELECT failure_reason, COUNT(failure_reason)
+    //                       FROM $table
+    //                       GROUP BY failure_reason
+    //                       ORDER BY COUNT(failure_reason) DESC;"""		//Get Unique Failure Reasons
+
+    //     var listReasons = sqlHiveContext.sql(queryList)
+    //     if(listReasons.next()){
+    //         System.out.println(listReasons.getString(1))
+    //     }
+        
+    //     //println(s"The most common reason for transaction error is: $commonFailure")
+    // }
 
  }
