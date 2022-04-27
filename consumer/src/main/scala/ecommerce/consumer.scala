@@ -15,7 +15,7 @@ object consumer {
         // Establish Hive Connection and initialize statement object
         var connection: java.sql.Connection = null
         var driverName = "org.apache.hive.jdbc.HiveDriver"
-        val connectionString = "jdbc:hive2://sandbox-hdp.hortonworks.com:10000/default"
+        val connectionString = "jdbc:hive2://sandbox-hdp.hortonworks.com:10000/ecommerce"
         Class.forName(driverName)
         connection = DriverManager.getConnection(connectionString, "", "")
         // This is the object you can call .execute(query) on
