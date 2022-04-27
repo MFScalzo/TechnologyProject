@@ -16,7 +16,7 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement) {
     val databaseName = "project2"
     val tableName = "alchemy"
 
-    spark.sql(s"USE $databaseName")
+    sqlHiveContext.sql(s"USE $databaseName")
     hiveStatement.execute(s"USE $databaseName")
 
     def highestRevenueByCountry() {
@@ -25,7 +25,7 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement) {
                         GROUP BY country
                         ORDER BY revenue DESC LIMIT 1;""""
 
-        spark.sql(query).show()
+        sqlHiveContext.sql(query).show()
     }
 
     def highestRevenueByCountryHive() {
