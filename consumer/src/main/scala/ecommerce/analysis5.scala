@@ -12,31 +12,41 @@ import java.sql.DriverManager
 class Analysis5(spark: SparkSession, hiveStatement: Statement){
     val sc = spark.sparkContext
     val sqlHiveContext = new org.apache.spark.sql.hive.HiveContext(sc)
-    val path = "home/users/maria_dev/ecommerce/alchemy/producer.csv"
-    val data = spark.read.csv(path)
+    
 
     def paymentFailPercent(): Unit = {
-        var txnPass = data.groupBy("payment_txn_success").agg(
-            .count(when(col("payment_txn_success") == 'Y', True)))
-        var txnFail = data.groupBy("payment_txn_success").agg(
-            .count(when(col("payment_txn_success") == 'N', True)))
-        var failPercent = (txnFail/(txnPass + txnFail))*100
+        //Count Number of TXN that Pass
+        var queryP = """SELECT COUNT(payment_txn_sucess) as passCount
+                    FROM alchemy
+                    WHERE payment_txn_sucess = 'Y';"""
 
-        println("Transactions fail ", failPercent, "% of the time.")
+        //Count Number of TXN that Fail
+        var queryF = """SELECT COUNT(payment_txn_sucess) as failCount
+                    FROM alchemy
+                    WHERE payment_txn_sucess = 'N';"""
 
+        var passAmount: Int = sqlHiveContext.sql(queryP).first.getInt(0)            //Get Pass as Int type
+        var failAmount: Int = sqlHiveContext.sql(queryF).first.getInt(0)            //Get Fail as Int type
+        var failPercent: Float = (failAmount / (passAmount + failAmount))*100       //Calculate the Fail Percent as Float type
+        
+        println(s"Transactions fail ${failPercent}% of the time.")
     }
 
     def commonPaymentFail(): Unit = {
         var commonFailure = " "
-        var listFailReasons = data.select("failure_reason").distinct().map(f=>f.getString(0)).collect.toList
+        var queryList = "SELECT DISTINCT failure_reason FROM table;"		//Get Unique Failure Reasons
+
+        var listReasons = sqlHiveContext.sql(queryList).rdd.map(r=>r.toString()).collect()
         var count = 0
-        for (reason <- listFailReasons){
-            var temp = test.groupBy("failure_reason").agg(count(when(col("failure_reason") == i, True)))
+        for(reason <- listReasons){
+            var query = """SELECT COUNT(failure_reason)
+                        FROM table
+                        WHERE failure_reason = s'${reason}'"""
+            var temp = sqlHiveContext.sql(query).first.getInt(0)
             if(temp > count){
                 count = temp
-                commonFailure = i
+                commonFailure = reason
             }
-
         }
         println("The most common reason for transaction error is: ", commonFailure)
     }
