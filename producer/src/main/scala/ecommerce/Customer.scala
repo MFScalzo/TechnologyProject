@@ -28,7 +28,7 @@ class Customer {
     ("New Orleans", "United States"),
     ("Seattle", "United States"),
     ("San Diego", "United States"),
-    ("Los Angeles", "Venezuela"),
+    ("Los Angeles", "United States"),
     ("Chicago", "United States"),
     ("Toronto", "Canada"),
     ("Vancouver", "Canada"),
