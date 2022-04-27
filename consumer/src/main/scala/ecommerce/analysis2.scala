@@ -25,7 +25,7 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement) {
                         GROUP BY country
                         ORDER BY revenue DESC LIMIT 1;""""
 
-        sqlHiveContext.sql(query).show()
+        sqlHiveContext.sql(query).show() // probably have to do some sort of formatting to make it look like $
     }
 
     def highestRevenueByCountryHive() {
@@ -36,7 +36,7 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement) {
 
         val result = hiveStatement.executeQuery(query)
 
-        if (result.next()) {
+        if (result.next()) {    // probably have to do some sort of formatting to make it look like $
             System.out.println(result.getString(1) + "\t" + result.getString(2));
         }
     }
