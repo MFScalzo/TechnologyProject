@@ -11,7 +11,7 @@ import java.sql.Statement
 import java.sql.DriverManager
 
 class HiveClient {
-    val dataBaseName = "project2"
+    val dataBaseName = "ecommerce"
     val tableName = "vanquish"
 
     def loadIntoHDFS(local: String, hdfs: String) {
