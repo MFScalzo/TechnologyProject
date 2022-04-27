@@ -21,14 +21,14 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
 
     def paymentFailPercent(): Unit = {
         //Count Number of TXN that Pass
-        var queryP = s"""SELECT COUNT(payment_txn_sucess) as passCount
+        var queryP = s"""SELECT COUNT(payment_txn_success) as passCount
                     FROM $table
-                    WHERE payment_txn_sucess = 'Y';"""
+                    WHERE payment_txn_success = 'Y';"""
 
         //Count Number of TXN that Fail
-        var queryF = s"""SELECT COUNT(payment_txn_sucess) as failCount
+        var queryF = s"""SELECT COUNT(payment_txn_success) as failCount
                     FROM $table
-                    WHERE payment_txn_sucess = 'N';"""
+                    WHERE payment_txn_success = 'N';"""
 
         var pass = sqlHiveContext.sql(queryP).show()
         var fail = sqlHiveContext.sql(queryF).show()
@@ -41,14 +41,14 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
     
     // def paymentFailPercentHive(): Unit = {
     //     //Count Number of TXN that Pass
-    //     var queryP = s"""SELECT COUNT(payment_txn_sucess) as passCount
+    //     var queryP = s"""SELECT COUNT(payment_txn_success) as passCount
     //                 FROM $table
-    //                 WHERE payment_txn_sucess = 'Y';"""
+    //                 WHERE payment_txn_success = 'Y';"""
 
     //     //Count Number of TXN that Fail
-    //     var queryF = s"""SELECT COUNT(payment_txn_sucess) as failCount
+    //     var queryF = s"""SELECT COUNT(payment_txn_success) as failCount
     //                 FROM $table
-    //                 WHERE payment_txn_sucess = 'N';"""
+    //                 WHERE payment_txn_success = 'N';"""
 
     //     var pass = sqlHiveContext.sql(queryP)
     //     if(pass.next()){
