@@ -23,7 +23,7 @@ class Analysis4(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
 
     def mostPopularPaymentType() {
         df1.createOrReplaceTempView("popularPaymentType")
-        val df2 = spark.sql(s"SELECT payment_type, COUNT(payment_type) as occurrence FROM popularPaymentType GROUP BY payment_type, product_name ORDER BY  occurrence DESC LIMIT 1")
+        val df2 = spark.sql(s"SELECT payment_type, COUNT(payment_type) as occurrence FROM popularPaymentType GROUP BY payment_type ORDER BY  occurrence DESC LIMIT 1")
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the most Popular Payment Type...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         df2.show()
 
@@ -48,7 +48,7 @@ class Analysis4(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
     def paymentTypeWithHighestRevenue() {
 
         df1.createOrReplaceTempView("paymentRevenue")
-        val df2 = spark.sql(s"SELECT payment_type, SUM(qty * price) as revenue FROM paymentRevenue GROUP BY product_category, payment_type ORDER BY revenue DESC LIMIT 1")
+        val df2 = spark.sql(s"SELECT payment_type, SUM(qty * price) as revenue FROM paymentRevenue GROUP BY payment_type ORDER BY revenue DESC LIMIT 1")
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Payment Type With Highest Revenue...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         df2.show()
 
