@@ -28,7 +28,7 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         val query = s"""SELECT country, SUM(qty * price) as revenue
                         FROM $tableName
                         GROUP BY country
-                        ORDER BY revenue DESC;"""
+                        ORDER BY revenue DESC"""
 
         val result = hiveStatement.executeQuery(query)
 
