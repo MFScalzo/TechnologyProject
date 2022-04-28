@@ -14,12 +14,27 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
     val sc = spark.sparkContext
     val sqlHiveContext = new org.apache.spark.sql.hive.HiveContext(sc)
 
+    val databaseName = "ecommerce"
+    val tableName = "alchemy"
+
+    sqlHiveContext.sql(s"USE $databaseName")
+    hiveStatement.execute(s"USE $databaseName")
+
     def highestRevenueByCountry() {
-        println("highestRevenueByCountry()")
+        println("Ordering Countries by Highest Revenue...")
     }
 
     def highestRevenueByCountryHive() {
-        println("highestRevenueByCountryHive()")
+        val query = s"""SELECT country, SUM(qty * price) as revenue
+                        FROM $tableName
+                        GROUP BY country
+                        ORDER BY revenue DESC;"""
+
+        val result = hiveStatement.executeQuery(query)
+
+        if (result.next()) {    // probably have to do some sort of formatting to make it look like $
+            System.out.println(f"${result.getString(1)}\t$$${result.getString(2).toFloat}%.2f");
+        }
     }
 
     def mostPopularDay() {
