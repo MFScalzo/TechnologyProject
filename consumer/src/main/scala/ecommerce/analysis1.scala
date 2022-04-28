@@ -33,9 +33,9 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         ORDER BY quantitySold DESC LIMIT 1
         """
         
-        println("Finding most popular Product by Category...")
+        println("Finding most popular Product...")
         val result = hiveStatement.executeQuery(query)
-        if (result.next()) {
+        while (result.next()) {
             System.out.println(f"${result.getString(1)}\t${result.getString(2)}\t${result.getString(3)}");
         }
     }

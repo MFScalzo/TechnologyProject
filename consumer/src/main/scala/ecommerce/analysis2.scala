@@ -30,26 +30,11 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
                         GROUP BY country
                         ORDER BY revenue DESC"""
 
+        println("Ordering Countries by Highest Revenue...")
         val result = hiveStatement.executeQuery(query)
 
-        if (result.next()) {    // probably have to do some sort of formatting to make it look like $
+        while (result.next()) {    // probably have to do some sort of formatting to make it look like $
             System.out.println(f"${result.getString(1)}\t$$${result.getString(2).toFloat}%.2f");
         }
-    }
-
-    def mostPopularDay() {
-        println("mostPopularDay()")
-    }
-
-    def mostPopularDayHive() {
-        println("mostPopularDayHive()")
-    }
-
-    def mostPopularMonth() {
-        println("mostPopularMonth()")
-    }
-
-    def mostPopularMonthHive() {
-        println("mostPopularMonthHive()")
     }
 }
