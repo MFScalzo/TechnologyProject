@@ -11,7 +11,7 @@ import java.sql.Statement
 import java.sql.DriverManager
 
 class HiveClient {
-    val dataBaseName = "project2"
+    val dataBaseName = "ecommerce"
     val tableName = "vanquish"
 
     def loadIntoHDFS(local: String, hdfs: String) {
@@ -34,7 +34,7 @@ class HiveClient {
 
         try {
             var driverName = "org.apache.hive.jdbc.HiveDriver"
-            val connectionString = "jdbc:hive2://sandbox-hdp.hortonworks.com:10000/default"
+            val connectionString = s"jdbc:hive2://sandbox-hdp.hortonworks.com:10000/$dataBaseName"
 
             Class.forName(driverName)
 
@@ -51,7 +51,7 @@ class HiveClient {
             
             println("Creating new table...")
             // If we want to use datetime as an actual timestamp format we have to add a seoncds position at the end of it, for now it is type string and must be converted later
-            query = s"""CREATE EXTERNAL TABLE $dataBaseName.$tableName (order_id int, customer_id int, customer_name string, product_id int, product_name string, product_category string, payment_type string, qty int, price float, datetime string, country string, city string, ecommerce_website_name string, payment_txn_id int, payment_txn_success char(1), failure_reason string)
+            query = s"""CREATE EXTERNAL TABLE $tableName (order_id int, customer_id int, customer_name string, product_id int, product_name string, product_category string, payment_type string, qty int, price float, datetime string, country string, city string, ecommerce_website_name string, payment_txn_id int, payment_txn_success char(1), failure_reason string)
                 row format delimited
                 fields terminated by ','
                 LOCATION '$hdfsPath'
