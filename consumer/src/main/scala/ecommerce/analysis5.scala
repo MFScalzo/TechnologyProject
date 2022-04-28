@@ -14,7 +14,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
     val sqlHiveContext = new org.apache.spark.sql.hive.HiveContext(sc)
     
     val db = "Ecommerce"
-    val table = "vanquish"
+    val table = "alchemy"
 
     sqlHiveContext.sql(s"USE $db")
     hiveStatement.execute(s"USE $db")
