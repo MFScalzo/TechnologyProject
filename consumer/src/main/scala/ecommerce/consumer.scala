@@ -84,11 +84,8 @@ object consumer {
     def runHiveFunctions() {
         drakeFunctions.mostPopularProductByCategoryHive()
         drakeFunctions.highestRevenueProductByCategoryHive()
-        drakeFunctions.highestRevenueProductByMonthHive()
 
         mattFunctions.highestRevenueByCountryHive()
-        mattFunctions.mostPopularDayHive()
-        mattFunctions.mostPopularMonthHive()
 
         //javierFunctions.
 
@@ -102,11 +99,8 @@ object consumer {
     def runSparkFunctions() {
         drakeFunctions.mostPopularProductByCategory()
         drakeFunctions.highestRevenueProductByCategory()
-        drakeFunctions.highestRevenueProductByMonth()
 
         mattFunctions.highestRevenueByCountry()
-        mattFunctions.mostPopularDay()
-        mattFunctions.mostPopularMonth()
 
         //javierFunctions.
 
