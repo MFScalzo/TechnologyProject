@@ -20,24 +20,19 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement) {
     hiveStatement.execute(s"USE $databaseName")
 
     def highestRevenueByCountry() {
-        val query = s"""SELECT country, SUM(qty * price) as revenue
-                        FROM $tableName
-                        GROUP BY country
-                        ORDER BY revenue DESC LIMIT 1;""""
-
-        sqlHiveContext.sql(query).show() // probably have to do some sort of formatting to make it look like $
+        println("Ordering Countries by Highest Revenue...")
     }
 
     def highestRevenueByCountryHive() {
         val query = s"""SELECT country, SUM(qty * price) as revenue
                         FROM $tableName
                         GROUP BY country
-                        ORDER BY revenue DESC LIMIT 1;""""
+                        ORDER BY revenue DESC;"""
 
         val result = hiveStatement.executeQuery(query)
 
         if (result.next()) {    // probably have to do some sort of formatting to make it look like $
-            System.out.println(result.getString(1) + "\t" + result.getString(2));
+            System.out.println(f"${result.getString(1)}\t$$${result.getString(2).toFloat}%.2f");
         }
     }
 
