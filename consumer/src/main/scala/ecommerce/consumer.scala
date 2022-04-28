@@ -123,7 +123,7 @@ object consumer {
         //javierFunctions.
 
         davidFunctions.mostPopularPaymentTypeHive()
-        davidFunctions.paymentTypeWithHighestRevenueHive()  // Functions should not be capitalized
+        davidFunctions.paymentTypeWithHighestRevenueHive()
 
         nickFunctions.paymentFailPercentHive()
         nickFunctions.commonPaymentFailHive()
@@ -138,7 +138,7 @@ object consumer {
         //javierFunctions.
 
         davidFunctions.mostPopularPaymentType()
-        davidFunctions.paymentTypeWithHighestRevenue()  // Functions should not be
+        davidFunctions.paymentTypeWithHighestRevenue()
 
         nickFunctions.paymentFailPercent()
         nickFunctions.commonPaymentFail()
