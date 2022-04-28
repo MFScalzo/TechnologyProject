@@ -45,7 +45,7 @@ object consumer {
         .add("ecommerce_website_name", StringType, true)
         .add("payment_txn_id", IntegerType, true)
         .add("payment_txn_success", StringType, true)
-        .add("failure_reason", IntegerType, true)
+        .add("failure_reason", StringType, true)
 
     // Initialize Spark DataFrame
     println("Creating DataFrame...")

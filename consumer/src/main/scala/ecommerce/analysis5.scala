@@ -25,7 +25,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
         val df2 = spark.sql(s"""SELECT payment_txn_success, COUNT(payment_txn_success) AS occurrences
                                 FROM FailPercent
                                 GROUP BY payment_txn_success
-                                ORDER BY occurrences""")
+                                ORDER BY occurrences DESC""")
         
         println("Finding the number of failures and successes...")
         df2.show(2)
@@ -41,7 +41,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
         println("Finding number of transaction failures and successes...")
         var result = hiveStatement.executeQuery(query)
         while(result.next()){
-            if(result.getString(1) == 'N' || result.getString(1) == 'Y'){
+            if(result.getString(1) == "N" || result.getString(1) == "Y"){
                 System.out.println(result.getString(1) + "\t" + result.getString(2))
             }
         }
