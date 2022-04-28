@@ -10,7 +10,7 @@ import java.sql.Connection
 import java.sql.Statement
 import java.sql.DriverManager
 
-class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFrame){
+class Analysis5(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFrame){
     val sc = spark.sparkContext
     val sqlHiveContext = new org.apache.spark.sql.hive.HiveContext(sc)
     
