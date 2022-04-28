@@ -12,7 +12,7 @@ import java.sql.DriverManager
 
 class Analysis4(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFrame) {
     def mostPopularPaymentTypeHive() {println("mostPopularPaymentTypeHive()")}
-    def PaymentTypeWithHighestRevenueHive() {println("PaymentTypeWithHighestRevenueHive()")}
+    def paymentTypeWithHighestRevenueHive() {println("PaymentTypeWithHighestRevenueHive()")}
     def mostPopularPaymentType() {println("mostPopularPaymentType()")}
     def PaymentTypeWithHighestRevenue() {println("PaymentTypeWithHighestRevenue()")}
 }

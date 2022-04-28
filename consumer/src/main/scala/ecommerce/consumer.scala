@@ -50,6 +50,7 @@ object consumer {
         .add("failure_reason", IntegerType, true)
 
     // Initialize Spark DataFrame
+    println("Trying to create dataframe...")
     val dataFrame = spark.read
         .format("csv")
         .schema(schema)
@@ -108,14 +109,14 @@ object consumer {
 
     def runHiveFunctions() {
         drakeFunctions.mostPopularProductByCategoryHive()
-        drakeFunctions.highestRevenueProductByCategoryHive()
+        drakeFunctions.highestRevenueProductHive()
 
         mattFunctions.highestRevenueByCountryHive()
 
         //javierFunctions.
 
         davidFunctions.mostPopularPaymentTypeHive()
-        davidFunctions.PaymentTypeWithHighestRevenueHive()  // Functions should not be capitalized
+        davidFunctions.paymentTypeWithHighestRevenueHive()  // Functions should not be capitalized
 
         nickFunctions.paymentFailPercentHive()
         nickFunctions.commonPaymentFailHive()
@@ -123,7 +124,7 @@ object consumer {
 
     def runSparkFunctions() {
         drakeFunctions.mostPopularProductByCategory()
-        drakeFunctions.highestRevenueProductByCategory()
+        drakeFunctions.highestRevenueProduct()
 
         mattFunctions.highestRevenueByCountry()
 

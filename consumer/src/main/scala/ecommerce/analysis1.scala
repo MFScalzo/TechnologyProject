@@ -22,13 +22,7 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
     hiveStatement.execute(s"USE $databaseName")
 
     def mostPopularProductByCategory() {        // displays the most popoular product name and which category it belongs to with the quantity that was sold.
-        val query = s"""
-        SELECT product_category, product_name, SUM(qty) as quantitySold
-        FROM $tableName
-        GROUP BY product_category, product_name
-        ORDER BY quantitySold DESC LIMIT 1;
-        """"
-        sqlHiveContext.sql(query).show()
+        println("Doing spark stuff here")
     }
     
     def mostPopularProductByCategoryHive() {    // Using Hive: displays the most popular product and which category it belongs to with the quantity that was sold.
@@ -36,26 +30,27 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         SELECT product_category, product_name, SUM(qty) as quantitySold
         FROM $tableName
         GROUP BY product_category, product_name
-        ORDER BY quantitySold DESC LIMIT 1;
-        """"
-
+        ORDER BY quantitySold DESC LIMIT 1
+        """
+        
+        println("Finding most popular Product by Category...")
         val result = hiveStatement.executeQuery(query)
         if (result.next()) {
-            System.out.println(result.getString(1) + "\t" + result.getString(2));
+            System.out.println(f"${result.getString(1)}\t${result.getString(2)}\t${result.getString(3)}");
         }
     }
 
-    def highestRevenueProductByCategory(){      // displays the product and its category that has the highest revenue and that revenue.
-        val query = s"SELECT product_category, product_name, SUM(qty * price) as revenue FROM $tableName GROUP BY product_category, product name ORDER BY revenue DESC LIMIT 1;"
-        sqlHiveContext.sql(query).show()
+    def highestRevenueProduct(){      // displays the product and its category that has the highest revenue and that revenue.
+        println("doing Spark Stuff here")
     }
         
-    def highestRevenueProductByCategoryHive() { // Using Hive: displays the product and its category that has the highest revenue and that revenue.
-        val query = s"SELECT product_category, product_name, SUM(qty * price) as revenue FROM $tableName GROUP BY product_category, product name ORDER BY revenue DESC LIMIT 1;"
+    def highestRevenueProductHive() { // Using Hive: displays the product and its category that has the highest revenue and that revenue.
+        val query = s"SELECT product_category, product_name, SUM(qty * price) as revenue FROM $tableName GROUP BY product_category, product_name ORDER BY revenue DESC LIMIT 1"
         val result = hiveStatement.executeQuery(query)
         
+        println("Finding the highest revenue Product...")
         if (result.next()) {
-            System.out.println(result.getString(1) + "\t" + result.getString(2));
+            System.out.println(f"${result.getString(1)}\t${result.getString(2)}\t${result.getString(3).toFloat}%.2f");
         } 
     }
 }
