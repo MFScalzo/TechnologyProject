@@ -20,11 +20,13 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
     sqlHiveContext.sql(s"USE $databaseName")
     hiveStatement.execute(s"USE $databaseName")
 
+    val df1 = dataFrame
+
     def mostPopularProductByCategory() {        // displays the most popoular product name and which category it belongs to with the quantity that was sold.
         println("Doing spark stuff here")
-        dataFrame.createOrReplaceTempView("popularProduct")
-        val dataFrame = spark.sql(s"SELECT product_category, product_name, SUM(qty) as quantitySold FROM popularProduct GROUP BY product_category, product_name ORDER BY quantitySold DESC LIMIT 1")
-        dataFrame.show()        
+        df1.createOrReplaceTempView("popularProduct")
+        val df2 = spark.sql(s"SELECT product_category, product_name, SUM(qty) as quantitySold FROM popularProduct GROUP BY product_category, product_name ORDER BY quantitySold DESC LIMIT 1")
+        df2.show()
     }
     
     def mostPopularProductByCategoryHive() {    // Using Hive: displays the most popular product and which category it belongs to with the quantity that was sold.
@@ -44,9 +46,9 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
 
     def highestRevenueProduct(){      // displays the product and its category that has the highest revenue and that revenue.
         println("doing Spark Stuff here")
-        dataFrame.createOrReplaceTempView("revenueProduct")
-        val dataFrame = spark.sql(s"SELECT product_category, product_name, SUM(qty * price) as revenue FROM revenueProduct GROUP BY product_category, product_name ORDER BY revenue DESC LIMIT 1")
-        dataFrame.show()
+        df1.createOrReplaceTempView("revenueProduct")
+        val df2 = spark.sql(s"SELECT product_category, product_name, SUM(qty * price) as revenue FROM revenueProduct GROUP BY product_category, product_name ORDER BY revenue DESC LIMIT 1")
+        df2.show()
     }
         
     def highestRevenueProductHive() { // Using Hive: displays the product and its category that has the highest revenue and that revenue.
