@@ -42,6 +42,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
     }
 
     def commonPaymentFail(): Unit = {
+        //Count each unique failure reason and order by desc (ignores blank values due to successful txn)
         var queryList = s"""SELECT failure_reason, COUNT(failure_reason) AS occurrences
                           FROM $table
                           WHERE NOT failure_reason = ""
@@ -53,6 +54,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
     }
 
     def commonPaymentFailHive(): Unit = {
+        //Count each unique failure reason and order by desc (ignores blank values due to successful txn)
         var queryList = s"""SELECT failure_reason, COUNT(failure_reason) as occurrences
                           FROM $table
                           WHERE NOT failure_reason = ""
