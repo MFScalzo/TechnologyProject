@@ -1,6 +1,7 @@
 package ecommerce
 
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.types._
 
 import java.io.IOException
@@ -22,7 +23,7 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
     def mostPopularProductByCategory() {        // displays the most popoular product name and which category it belongs to with the quantity that was sold.
         println("Doing spark stuff here")
         dataFrame.createOrReplaceTempView("popularProduct")
-        val dataFrame = spark.sql(s"SELECT product_category, product_name, SUM(qty) as quantitySold FROM $tableName GROUP BY product_category, product_name ORDER BY quantitySold DESC LIMIT 1")
+        val dataFrame = spark.sql(s"SELECT product_category, product_name, SUM(qty) as quantitySold FROM popularProduct GROUP BY product_category, product_name ORDER BY quantitySold DESC LIMIT 1")
         dataFrame.show()        
     }
     
@@ -43,7 +44,8 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
 
     def highestRevenueProduct(){      // displays the product and its category that has the highest revenue and that revenue.
         println("doing Spark Stuff here")
-        val dataFrame = spark.sql(s"SELECT product_category, product_name, SUM(qty * price) as revenue FROM $tableName GROUP BY product_category, product_name ORDER BY revenue DESC LIMIT 1")
+        dataFrame.createOrReplaceTempView("revenueProduct")
+        val dataFrame = spark.sql(s"SELECT product_category, product_name, SUM(qty * price) as revenue FROM revenueProduct GROUP BY product_category, product_name ORDER BY revenue DESC LIMIT 1")
         dataFrame.show()
     }
         
