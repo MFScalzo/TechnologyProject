@@ -1,6 +1,7 @@
 package ecommerce
 
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.types._
 
 import java.io.IOException
@@ -29,13 +30,37 @@ object consumer {
         .getOrCreate()
     
     spark.sparkContext.setLogLevel("ERROR")
+
+    val schema = new StructType()
+        .add("order_id", IntegerType, true)
+        .add("customer_id", IntegerType, true)
+        .add("customer_name", StringType, true)
+        .add("prod_id", IntegerType, true)
+        .add("product_name", StringType, true)
+        .add("product_category", StringType, true)
+        .add("payment_type", StringType, true)
+        .add("qty", IntegerType, true)
+        .add("price", FloatType, true)
+        .add("datetime", StringType, true)
+        .add("country", StringType, true)
+        .add("city", StringType, true)
+        .add("ecommerce_website_name", StringType, true)
+        .add("payment_txn_id", IntegerType, true)
+        .add("payment_txn_success", StringType, true)
+        .add("failure_reason", IntegerType, true)
+
+    // Initialize Spark DataFrame
+    val dataFrame = spark.read
+        .format("csv")
+        .schema(schema)
+        .load("/user/maria_dev/alchemy/ecommerce.csv")
     
     // Initialize analysis objects
-    val drakeFunctions = new Analysis1(spark, hiveStatement)
-    val mattFunctions = new Analysis2(spark, hiveStatement)
-    val javierFunctions = new Analysis3(spark, hiveStatement)
-    val davidFunctions = new Analysis4(spark, hiveStatement)
-    val nickFunctions = new Analysis5(spark, hiveStatement)
+    val drakeFunctions = new Analysis1(spark, hiveStatement, dataFrame)
+    val mattFunctions = new Analysis2(spark, hiveStatement, dataFrame)
+    val javierFunctions = new Analysis3(spark, hiveStatement, dataFrame)
+    val davidFunctions = new Analysis4(spark, hiveStatement, dataFrame)
+    val nickFunctions = new Analysis5(spark, hiveStatement, dataFrame)
 
     def main(args: Array[String]) {
         var continueLoop = true

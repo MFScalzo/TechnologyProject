@@ -1,6 +1,7 @@
 package ecommerce
 
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.types._
 
 import java.io.IOException
@@ -9,7 +10,7 @@ import java.sql.Connection
 import java.sql.Statement
 import java.sql.DriverManager
 
-class Analysis5(spark: SparkSession, hiveStatement: Statement) {
+class Analysis5(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFrame) {
     def paymentFailPercentHive() {println("paymentFailPercentHive()")}
     def commonPaymentFailHive() {println("commonPaymentFailHive()")}
     def paymentFailPercent() {println("paymentFailPercent()")}
