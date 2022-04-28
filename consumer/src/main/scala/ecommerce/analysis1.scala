@@ -56,17 +56,4 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement) {
             System.out.println(result.getString(1) + "\t" + result.getString(2));
         } 
         
-    def highestRevenueProductByMonth() {        //NOT WORKING: I believe it is because the datetime column is named as such, it is not recognized as a valid column here.......
-                                                // displays the highest revenue product and the month in which it sold.
-        val query = s"SELECT DATEPART(MM, datetime) as month, product_name, SUM(qty * price) as revenue FROM $tableName GROUP BY month, product_name ORDER BY revenue DESC LIMIT 1;"
-        sqlHiveContext.sql(query).show()
-    }
-
-    def highestRevenueProductByMonthHive() {    // NOT WORKING: see above.             Using Hive: displays the highest revenue product and the month in which it sold.
-        val query =s"SELECT DATEPART(MM, datetime) as month, product_name, SUM(qty * price) as revenue FROM $tableName GROUP BY month, product_name ORDER BY revenue DESC LIMIT 1;"
-        val result = hiveStatement.executeQuery(query)
-        if (result.next()) {
-            System.out.println(result.getString(1) + "\t" + result.getString(2));
-        }
-    }
 }
