@@ -45,6 +45,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
         var commonFailure = " "
         var queryList = s"""SELECT failure_reason, COUNT(failure_reason) AS occurrences
                           FROM $table
+                          WHERE NOT failure_reason = ""
                           GROUP BY failure_reason
                           ORDER BY occurrences DESC;"""		
 
@@ -54,10 +55,11 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
 
     def commonPaymentFailHive(): Unit = {
         var commonFailure = " "
-        var queryList = s"""SELECT failure_reason, COUNT(failure_reason)
+        var queryList = s"""SELECT failure_reason, COUNT(failure_reason) as occurrences
                           FROM $table
+                          WHERE NOT failure_reason = ""
                           GROUP BY failure_reason
-                          ORDER BY COUNT(failure_reason) DESC;"""		
+                          ORDER BY occurrences DESC;"""		
 
         var listReasons = hiveStatement.executeQuery(queryList)
         if(listReasons.next()){
