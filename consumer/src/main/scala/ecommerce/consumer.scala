@@ -131,7 +131,7 @@ object consumer {
         //javierFunctions.
 
         davidFunctions.mostPopularPaymentType()
-        davidFunctions.PaymentTypeWithHighestRevenue()  // Functions should not be
+        davidFunctions.paymentTypeWithHighestRevenue()  // Functions should not be
 
         nickFunctions.paymentFailPercent()
         nickFunctions.commonPaymentFail()
