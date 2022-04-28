@@ -32,6 +32,7 @@ class Analysis4(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         ORDER BY occurrence DESC LIMIT 1
         """
 
+        println("Finding the most popular Payment Type...")
         val result = hiveStatement.executeQuery(query)
         if (result.next()) {
             System.out.println(result.getString(1) + "\t" + result.getString(2));
@@ -49,10 +50,11 @@ class Analysis4(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         GROUP BY payment_type
         ORDER BY revenue DESC LIMIT 1"""
 
+        println("Finding highest Revenue Payment Type...")
         val result = hiveStatement.executeQuery(query)
         
         if (result.next()) {
-            System.out.println(result.getString(1) + "\t" + result.getString(2));
+            System.out.println(f"${result.getString(1)}\t$$${result.getString(2).toFloat}%.2f");
         } 
     }
 }
