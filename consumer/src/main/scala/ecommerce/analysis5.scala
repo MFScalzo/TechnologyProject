@@ -10,7 +10,7 @@ import java.sql.Connection
 import java.sql.Statement
 import java.sql.DriverManager
 
-class Analysis5(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFrame){
+class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFrame){
     val sc = spark.sparkContext
     val sqlHiveContext = new org.apache.spark.sql.hive.HiveContext(sc)
     
@@ -26,6 +26,8 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
                                 FROM $table
                                 GROUP BY payment_txn_success
                                 ORDER BY occurrences""")
+        
+        println("Finding the number of failures and successes...")
         df2.show(2)
     }
     
@@ -52,6 +54,8 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
                           WHERE NOT failure_reason = ""
                           GROUP BY failure_reason
                           ORDER BY occurrences DESC LIMIT 1""")
+        
+        println("Finding most common reason for payment failure...")
         df2.show()
         
     }
