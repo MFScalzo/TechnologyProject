@@ -20,8 +20,17 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
     sqlHiveContext.sql(s"USE $databaseName")
     hiveStatement.execute(s"USE $databaseName")
 
+    val df1 = dataFrame
+
     def highestRevenueByCountry() {
-        println("Ordering Countries by Highest Revenue...")
+        df1.createOrReplaceTempView("countryrevenue")
+        
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nOrdering Countries by Highest Revenue...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        
+        val df2 = spark.sql("SELECT country, SUM(qty * price) as revenue FROM countryrevenue GROUP BY country ORDER BY revenue DESC")
+        
+        df2.show()
+        println("############################################################")
     }
 
     def highestRevenueByCountryHive() {
@@ -30,18 +39,18 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
                         GROUP BY country
                         ORDER BY revenue DESC"""
 
-        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nOrdering Countries by Highest Revenue\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nOrdering Countries by Highest Revenue...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         val result = hiveStatement.executeQuery(query)
 
-        println("Country\t\t\tTotal Revenue\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        println("Country\t\t\tTotal Revenue\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         while (result.next()) {
-                if (result.getString(1).length() >= 8) {
-                    System.out.println(f"${result.getString(1)}\t\t$$${result.getString(2).toFloat}%.2f")
-                }
-                else if (result.getString(1).length() < 8) {
-                    System.out.println(f"${result.getString(1)}\t\t\t$$${result.getString(2).toFloat}%.2f")
-                }
-            //System.out.println(f"${result.getString(1)}\t\t$$${result.getString(2).toFloat}%.2f");
+            if (result.getString(1).length() >= 8) {
+                System.out.println(f"${result.getString(1)}\t\t$$${result.getString(2).toFloat}%.2f")
+            }
+            else if (result.getString(1).length() < 8) {
+                System.out.println(f"${result.getString(1)}\t\t\t$$${result.getString(2).toFloat}%.2f")
+            }
         }
+        println("############################################################")
     }
 }

@@ -45,10 +45,10 @@ object consumer {
         .add("ecommerce_website_name", StringType, true)
         .add("payment_txn_id", IntegerType, true)
         .add("payment_txn_success", StringType, true)
-        .add("failure_reason", IntegerType, true)
+        .add("failure_reason", StringType, true)
 
     // Initialize Spark DataFrame
-    println("Trying to create dataframe...")
+    println("Creating DataFrame...")
     val dataFrame = spark.read
         .format("csv")
         .schema(schema)
@@ -116,31 +116,57 @@ object consumer {
 
     def runHiveFunctions() {
         drakeFunctions.mostPopularProductByCategoryHive()
+        print("Continue...")
+        readLine
         drakeFunctions.highestRevenueProductHive()
-
+        print("Continue...")
+        readLine
         mattFunctions.highestRevenueByCountryHive()
-
+        print("Continue...")
+        readLine
         //javierFunctions.
-
+        
         davidFunctions.mostPopularPaymentTypeHive()
-        davidFunctions.paymentTypeWithHighestRevenueHive()  // Functions should not be capitalized
+        print("Continue...")
+        readLine
+        davidFunctions.paymentTypeWithHighestRevenueHive()
+        print("Continue...")
+        readLine
 
         nickFunctions.paymentFailPercentHive()
+        print("Continue...")
+        readLine
         nickFunctions.commonPaymentFailHive()
+        print("Continue...")
+        readLine
     }
 
     def runSparkFunctions() {
         drakeFunctions.mostPopularProductByCategory()
+        print("Continue...")
+        readLine
         drakeFunctions.highestRevenueProduct()
+        print("Continue...")
+        readLine
 
         mattFunctions.highestRevenueByCountry()
+        print("Continue...")
+        readLine
 
         //javierFunctions.
 
         davidFunctions.mostPopularPaymentType()
-        davidFunctions.paymentTypeWithHighestRevenue()  // Functions should not be
+        print("Continue...")
+        readLine
+        davidFunctions.paymentTypeWithHighestRevenue()
+        print("Continue...")
+        readLine
 
         nickFunctions.paymentFailPercent()
+        print("Continue...")
+        readLine
         nickFunctions.commonPaymentFail()
+        print("Continue...")
+        readLine
     }
 }

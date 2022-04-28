@@ -25,9 +25,9 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
         val df2 = spark.sql(s"""SELECT payment_txn_success, COUNT(payment_txn_success) AS occurrences
                                 FROM FailPercent
                                 GROUP BY payment_txn_success
-                                ORDER BY occurrences""")
-        
-        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the number of failures and successes...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                                ORDER BY occurrences DESC""")
+
+        println(s"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the number of failures and successes...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         df2.show(2)
         val x = df2.select("occurrences").where("payment_txn_success == F")
         val fail: Int = x.first().getInt(1)
@@ -35,9 +35,9 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
         val pass: Int = y.first().getInt(1)
         val percent: Float = (fail / (pass + fail))*100
         println(s"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPayments failed ${percent%.2f}% of the time")
-       
+        println("############################################################")
     }
-    
+
     def paymentFailPercentHive(): Unit = {
         //Count Number of TXN that Pass and Fail
         var query = s"""SELECT payment_txn_success, COUNT(payment_txn_success) 
@@ -61,6 +61,8 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
         }
         val percent: Float = (fail /(pass + fail))*100
         println(s"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPayments failed ${percent%.2f}% of the time.")
+        println("############################################################")
+
     }
 
     def commonPaymentFail(): Unit = {
@@ -71,10 +73,10 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
                           WHERE NOT failure_reason = ""
                           GROUP BY failure_reason
                           ORDER BY occurrences DESC LIMIT 1""")
-        
+
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding most common reason for payment failure...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         df2.show()
-        
+        println("############################################################")
     }
 
     def commonPaymentFailHive(): Unit = {
@@ -90,6 +92,6 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
         if(listReasons.next()){
             System.out.println(s"Reason for Failure\tOccurrences\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n${listReasons.getString(1)}\t\t${listReasons.getString(2)}")
         }
+        println("############################################################")
     }
-
  }
