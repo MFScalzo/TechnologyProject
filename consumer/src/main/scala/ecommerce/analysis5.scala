@@ -23,12 +23,13 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
         //Count Number of TXN that Pass and Fail
         dataframe.createOrReplaceTempView("FailPercent")
         val df2 = spark.sql(s"""SELECT payment_txn_success, COUNT(payment_txn_success) AS occurrences
-                                FROM $table
+                                FROM FailPercent
                                 GROUP BY payment_txn_success
                                 ORDER BY occurrences""")
         
         println("Finding the number of failures and successes...")
         df2.show(2)
+       
     }
     
     def paymentFailPercentHive(): Unit = {
@@ -50,7 +51,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
         //Count each unique failure reason and order by desc (ignores blank values due to successful txn)
         dataframe.createOrReplaceTempView("FailReason")
         val df2 = spark.sql(s"""SELECT failure_reason, COUNT(failure_reason) as occurrences
-                          FROM $table
+                          FROM FailReason
                           WHERE NOT failure_reason = ""
                           GROUP BY failure_reason
                           ORDER BY occurrences DESC LIMIT 1""")
