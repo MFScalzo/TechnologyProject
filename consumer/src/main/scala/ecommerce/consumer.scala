@@ -48,7 +48,7 @@ object consumer {
         .add("failure_reason", IntegerType, true)
 
     // Initialize Spark DataFrame
-    println("Trying to create dataframe...")
+    println("Creating DataFrame...")
     val dataFrame = spark.read
         .format("csv")
         .schema(schema)
