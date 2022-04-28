@@ -55,5 +55,6 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement) {
         if (result.next()) {
             System.out.println(result.getString(1) + "\t" + result.getString(2));
         } 
+    }
         
 }
