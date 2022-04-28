@@ -10,7 +10,6 @@ import java.sql.Connection
 import java.sql.Statement
 import java.sql.DriverManager
 
-
 class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFrame) { 
     val sc = spark.sparkContext
     val sqlHiveContext = new org.apache.spark.sql.hive.HiveContext(sc)
@@ -33,10 +32,10 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         ORDER BY quantitySold DESC LIMIT 1
         """
         
-        println("Finding most popular Product...")
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the most popular Product\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         val result = hiveStatement.executeQuery(query)
-        while (result.next()) {
-            System.out.println(f"${result.getString(1)}\t${result.getString(2)}\t${result.getString(3)}");
+        if (result.next()) {
+            System.out.println(f"Product Category\tProduct Name\tQuantity Sold\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n${result.getString(1)}\t\t${result.getString(2)}\t\t${result.getString(3)}");
         }
     }
 
@@ -48,9 +47,10 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         val query = s"SELECT product_category, product_name, SUM(qty * price) as revenue FROM $tableName GROUP BY product_category, product_name ORDER BY revenue DESC LIMIT 1"
         val result = hiveStatement.executeQuery(query)
         
-        println("Finding the highest revenue Product...")
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the product with the highest revenue\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         if (result.next()) {
-            System.out.println(f"${result.getString(1)}\t${result.getString(2)}\t${result.getString(3).toFloat}%.2f");
-        } 
+            System.out.println(f"Product Category\tProduct Name\tProduct Revenue\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n${result.getString(1)}\t\t${result.getString(2)}\t\t$$${result.getString(3).toFloat}%.2f");
+        }
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     }
 }

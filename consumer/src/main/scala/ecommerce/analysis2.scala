@@ -30,11 +30,18 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
                         GROUP BY country
                         ORDER BY revenue DESC"""
 
-        println("Ordering Countries by Highest Revenue...")
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nOrdering Countries by Highest Revenue\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         val result = hiveStatement.executeQuery(query)
 
-        while (result.next()) {    // probably have to do some sort of formatting to make it look like $
-            System.out.println(f"${result.getString(1)}\t$$${result.getString(2).toFloat}%.2f");
+        println("Country\t\t\tTotal Revenue\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        while (result.next()) {
+                if (result.getString(1).length() >= 8) {
+                    System.out.println(f"${result.getString(1)}\t\t$$${result.getString(2).toFloat}%.2f")
+                }
+                else if (result.getString(1).length() < 8) {
+                    System.out.println(f"${result.getString(1)}\t\t\t$$${result.getString(2).toFloat}%.2f")
+                }
+            //System.out.println(f"${result.getString(1)}\t\t$$${result.getString(2).toFloat}%.2f");
         }
     }
 }
