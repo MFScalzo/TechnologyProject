@@ -9,4 +9,9 @@ import java.sql.Connection
 import java.sql.Statement
 import java.sql.DriverManager
 
-class Analysis5(spark: SparkSession, hiveStatement: Statement) { }
+class Analysis5(spark: SparkSession, hiveStatement: Statement) {
+    def paymentFailPercentHive() {println("paymentFailPercentHive()")}
+    def commonPaymentFailHive() {println("commonPaymentFailHive()")}
+    def paymentFailPercent() {println("paymentFailPercent()")}
+    def commonPaymentFail() {println("commonPaymentFail()")}
+}

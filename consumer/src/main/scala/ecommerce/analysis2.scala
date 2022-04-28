@@ -14,27 +14,26 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement) {
     val sqlHiveContext = new org.apache.spark.sql.hive.HiveContext(sc)
 
     def highestRevenueByCountry() {
-        val query = s"SELECT country, sum((qty * price)) from alchemy "
+        println("highestRevenueByCountry()")
     }
 
     def highestRevenueByCountryHive() {
-        var query = s""
-        hiveStatement.execute(query)
+        println("highestRevenueByCountryHive()")
     }
 
     def mostPopularDay() {
-
+        println("mostPopularDay()")
     }
 
     def mostPopularDayHive() {
-
+        println("mostPopularDayHive()")
     }
 
     def mostPopularMonth() {
-
+        println("mostPopularMonth()")
     }
 
     def mostPopularMonthHive() {
-
+        println("mostPopularMonthHive()")
     }
 }

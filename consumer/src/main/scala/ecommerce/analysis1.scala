@@ -9,4 +9,12 @@ import java.sql.Connection
 import java.sql.Statement
 import java.sql.DriverManager
 
-class Analysis1(spark: SparkSession, hiveStatement: Statement) { }
+class Analysis1(spark: SparkSession, hiveStatement: Statement) {
+
+    def mostPopularProductByCategoryHive() { println("mostPopularProductByCategoryHive()")}
+    def highestRevenueProductByCategoryHive() { println("highestRevenueProductByCategoryHive()")}
+    def highestRevenueProductByMonthHive() { println("highestRevenueProductByMonthHive()")}
+    def mostPopularProductByCategory() { println("mostPopularProductByCategory()")}
+    def highestRevenueProductByCategory() { println("highestRevenueProductByCategory()")}
+    def highestRevenueProductByMonth() { println("highestRevenueProductByMonth()")}
+}

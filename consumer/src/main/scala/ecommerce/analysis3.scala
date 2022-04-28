@@ -9,4 +9,6 @@ import java.sql.Connection
 import java.sql.Statement
 import java.sql.DriverManager
 
-class Analysis3(spark: SparkSession, hiveStatement: Statement) { }
+class Analysis3(spark: SparkSession, hiveStatement: Statement) {
+
+}
