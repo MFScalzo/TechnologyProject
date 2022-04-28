@@ -3,6 +3,7 @@ package ecommerce
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.types._
+import org.apache.spark.sql.functions.{round, col}
 
 import java.io.IOException
 import scala.util.Try
@@ -52,7 +53,7 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
     }
         
     def highestRevenueProductHive() { // Using Hive: displays the product and its category that has the highest revenue and that revenue.
-        val query = s"SELECT product_category, product_name, SUM(qty * price) as revenue FROM $tableName GROUP BY product_category, product_name ORDER BY revenue DESC LIMIT 1"
+        val query = s"SELECT product_category, product_name, $$SUM(qty * price)%.2f as revenue FROM $tableName GROUP BY product_category, product_name ORDER BY revenue DESC LIMIT 1"
         val result = hiveStatement.executeQuery(query)
         
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Product with the Highest Revenue...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
