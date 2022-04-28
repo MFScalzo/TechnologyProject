@@ -3,6 +3,7 @@ package ecommerce
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.types._
+import org.apache.spark.sql.functions.{round, col}
 
 import java.io.IOException
 import scala.util.Try
@@ -45,7 +46,7 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
 
     def highestRevenueProduct(){      // displays the product and its category that has the highest revenue and that revenue.
         df1.createOrReplaceTempView("revenueProduct")
-        val df2 = spark.sql(s"SELECT product_category, product_name, $$SUM(qty * price)%.2f as revenue FROM revenueProduct GROUP BY product_category, product_name ORDER BY revenue DESC LIMIT 1")
+        val df2 = spark.sql(s"SELECT product_category, product_name, SUM(qty * price) as revenue FROM revenueProduct GROUP BY product_category, product_name ORDER BY revenue DESC LIMIT 1")
         df2.show()
     }
         
