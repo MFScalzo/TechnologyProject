@@ -23,7 +23,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
         //Count Number of TXN that Pass and Fail
         var query = s"""SELECT payment_txn_success, COUNT(payment_txn_success) 
                     FROM $table
-                    GROUP BY payment_txn_success;"""
+                    GROUP BY payment_txn_success"""
 
         sqlHiveContext.sql(query).show()
     }
@@ -32,7 +32,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
         //Count Number of TXN that Pass and Fail
         var query = s"""SELECT payment_txn_success, COUNT(payment_txn_success) 
                     FROM $table
-                    GROUP BY payment_txn_success;"""
+                    GROUP BY payment_txn_success"""
         
         var result = hiveStatement.executeQuery(query)
         if(result.next()){
@@ -47,7 +47,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
                           FROM $table
                           WHERE NOT failure_reason = ""
                           GROUP BY failure_reason
-                          ORDER BY occurrences DESC;"""		
+                          ORDER BY occurrences DESC LIMIT 1"""		
 
         sqlHiveContext.sql(queryList).show()
         
@@ -59,11 +59,11 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
                           FROM $table
                           WHERE NOT failure_reason = ""
                           GROUP BY failure_reason
-                          ORDER BY occurrences DESC;"""		
+                          ORDER BY occurrences DESC LIMIT 1"""		
 
         var listReasons = hiveStatement.executeQuery(queryList)
         if(listReasons.next()){
-            System.out.println(listReasons.getString(1))
+            System.out.println(listReasons.getString(1) + "\t" + listReasons.getString(2))
         }
     }
 
