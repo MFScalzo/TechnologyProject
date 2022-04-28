@@ -116,31 +116,57 @@ object consumer {
 
     def runHiveFunctions() {
         drakeFunctions.mostPopularProductByCategoryHive()
+        print("Continue...")
+        readLine
         drakeFunctions.highestRevenueProductHive()
-
+        print("Continue...")
+        readLine
         mattFunctions.highestRevenueByCountryHive()
-
+        print("Continue...")
+        readLine
         //javierFunctions.
-
+        
         davidFunctions.mostPopularPaymentTypeHive()
+        print("Continue...")
+        readLine
         davidFunctions.paymentTypeWithHighestRevenueHive()
+        print("Continue...")
+        readLine
 
         nickFunctions.paymentFailPercentHive()
+        print("Continue...")
+        readLine
         nickFunctions.commonPaymentFailHive()
+        print("Continue...")
+        readLine
     }
 
     def runSparkFunctions() {
         drakeFunctions.mostPopularProductByCategory()
+        print("Continue...")
+        readLine
         drakeFunctions.highestRevenueProduct()
+        print("Continue...")
+        readLine
 
         mattFunctions.highestRevenueByCountry()
+        print("Continue...")
+        readLine
 
         //javierFunctions.
 
         davidFunctions.mostPopularPaymentType()
+        print("Continue...")
+        readLine
         davidFunctions.paymentTypeWithHighestRevenue()
+        print("Continue...")
+        readLine
 
         nickFunctions.paymentFailPercent()
+        print("Continue...")
+        readLine
         nickFunctions.commonPaymentFail()
+        print("Continue...")
+        readLine
     }
 }

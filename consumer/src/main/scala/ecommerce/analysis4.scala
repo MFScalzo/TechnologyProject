@@ -22,11 +22,11 @@ class Analysis4(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
     hiveStatement.execute(s"USE $databaseName")
 
     def mostPopularPaymentType() {
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding most Popular Payment Type...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         df1.createOrReplaceTempView("popularPaymentType")
         val df2 = spark.sql(s"SELECT payment_type, COUNT(payment_type) as occurrence FROM popularPaymentType GROUP BY payment_type ORDER BY  occurrence DESC LIMIT 1")
-        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the most Popular Payment Type...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         df2.show()
-
+        println("############################################################")
     }
     
     def mostPopularPaymentTypeHive() {
@@ -38,20 +38,20 @@ class Analysis4(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         """
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the most Popular Payment Type...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-        println("Finding the most popular Payment Type...")
         val result = hiveStatement.executeQuery(query)
+        println("Payment Type\t\tOccurences")
         if (result.next()) {
-            System.out.println(result.getString(1) + "\t" + result.getString(2));
+            System.out.println(result.getString(1) + "\t\t" + result.getString(2));
         }
+        println("############################################################")
     }
 
     def paymentTypeWithHighestRevenue() {
-
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding Payment Type with the Highest Revenue...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         df1.createOrReplaceTempView("paymentRevenue")
         val df2 = spark.sql(s"SELECT payment_type, SUM(qty * price) as revenue FROM paymentRevenue GROUP BY payment_type ORDER BY revenue DESC LIMIT 1")
-        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Payment Type With Highest Revenue...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         df2.show()
-
+        println("############################################################")
     }
         
     def paymentTypeWithHighestRevenueHive() {
@@ -60,13 +60,14 @@ class Analysis4(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         FROM $tableName
         GROUP BY payment_type
         ORDER BY revenue DESC LIMIT 1"""
-        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Payment Type With Highest Revenue...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding Payment Type with the Highest Revenue...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-        println("Finding highest Revenue Payment Type...")
         val result = hiveStatement.executeQuery(query)
         
+        println("Payment Type\t\tRevenue")
         if (result.next()) {
             System.out.println(f"${result.getString(1)}\t$$${result.getString(2).toFloat}%.2f");
-        } 
+        }
+        println("############################################################")
     }
 }

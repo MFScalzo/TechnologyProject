@@ -24,9 +24,13 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
 
     def highestRevenueByCountry() {
         df1.createOrReplaceTempView("countryrevenue")
-        val df2 = spark.sql("SELECT country, SUM(qty * price) as revenue FROM countryrevenue GROUP BY country ORDER BY revenue DESC")
+        
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nOrdering Countries by Highest Revenue...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        
+        val df2 = spark.sql("SELECT country, SUM(qty * price) as revenue FROM countryrevenue GROUP BY country ORDER BY revenue DESC")
+        
         df2.show()
+        println("############################################################")
     }
 
     def highestRevenueByCountryHive() {
@@ -47,5 +51,6 @@ class Analysis2(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
                 System.out.println(f"${result.getString(1)}\t\t\t$$${result.getString(2).toFloat}%.2f")
             }
         }
+        println("############################################################")
     }
 }

@@ -28,6 +28,7 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         val df2 = spark.sql(s"SELECT product_category, product_name, SUM(qty) as quantitySold FROM popularProduct GROUP BY product_category, product_name ORDER BY quantitySold DESC LIMIT 1")
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the most Popular Product...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         df2.show()
+        println("############################################################")
     }
     
     def mostPopularProductByCategoryHive() {    // Using Hive: displays the most popular product and which category it belongs to with the quantity that was sold.
@@ -43,6 +44,7 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         if (result.next()) {
             System.out.println(f"Product Category\tProduct Name\tQuantity Sold\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n${result.getString(1)}\t\t${result.getString(2)}\t\t${result.getString(3)}");
         }
+        println("############################################################")
     }
 
     def highestRevenueProduct(){      // displays the product and its category that has the highest revenue and that revenue.
@@ -50,16 +52,17 @@ class Analysis1(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         val df2 = spark.sql(s"SELECT product_category, product_name, SUM(qty * price) as revenue FROM revenueProduct GROUP BY product_category, product_name ORDER BY revenue DESC LIMIT 1")
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Product with the Highest Revenue...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         df2.show()
+        println("############################################################")
     }
         
     def highestRevenueProductHive() { // Using Hive: displays the product and its category that has the highest revenue and that revenue.
         val query = s"SELECT product_category, product_name, SUM(qty * price) as revenue FROM $tableName GROUP BY product_category, product_name ORDER BY revenue DESC LIMIT 1"
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Product with the Highest Revenue...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         val result = hiveStatement.executeQuery(query)
         
-        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Product with the Highest Revenue...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         if (result.next()) {
             System.out.println(f"Product Category\tProduct Name\tProduct Revenue\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n${result.getString(1)}\t\t${result.getString(2)}\t\t$$${result.getString(3).toFloat}%.2f");
         }
-        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        println("############################################################")
     }
 }
