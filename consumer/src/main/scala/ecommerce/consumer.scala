@@ -10,8 +10,6 @@ import java.sql.Connection
 import java.sql.Statement
 import java.sql.DriverManager
 
-import scala.io.StdIn.readLine
-
 
 object consumer {
     // Establish Hive Connection and initialize statement object
@@ -64,6 +62,15 @@ object consumer {
     val nickFunctions = new Analysis5(spark, hiveStatement, dataFrame)
 
     def main(args: Array[String]) {
+        // Establish Hive Connection and initialize statement object
+        var connection: java.sql.Connection = null
+        var driverName = "org.apache.hive.jdbc.HiveDriver"
+        val connectionString = "jdbc:hive2://sandbox-hdp.hortonworks.com:10000/ecommerce"
+        Class.forName(driverName)
+        connection = DriverManager.getConnection(connectionString, "", "")
+        // This is the object you can call .execute(query) on
+        val hiveStatement = connection.createStatement()
+
         var continueLoop = true
 
         while (continueLoop) {
