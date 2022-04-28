@@ -25,6 +25,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
                     FROM $table
                     GROUP BY payment_txn_success"""
 
+        println("Finding number of transaction failures and successes...")
         sqlHiveContext.sql(query).show()
     }
     
@@ -34,6 +35,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
                     FROM $table
                     GROUP BY payment_txn_success"""
         
+        println("Finding number of transaction failures and successes...")
         var result = hiveStatement.executeQuery(query)
         if(result.next()){
             System.out.println(result.getString(1) + "\t" + result.getString(2))
@@ -49,6 +51,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
                           GROUP BY failure_reason
                           ORDER BY occurrences DESC LIMIT 1"""		
 
+        println("Finding most common reason for payment failure...")
         sqlHiveContext.sql(queryList).show()
         
     }
@@ -61,6 +64,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement){
                           GROUP BY failure_reason
                           ORDER BY occurrences DESC LIMIT 1"""		
 
+        println("Finding most common reason for payment failure...")
         var listReasons = hiveStatement.executeQuery(queryList)
         if(listReasons.next()){
             System.out.println(listReasons.getString(1) + "\t" + listReasons.getString(2))
