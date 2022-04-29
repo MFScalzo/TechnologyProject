@@ -30,7 +30,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
         
         
         df2.show(2)
-        println("############################################################")
+        println("\n############################################################")
     }
     
     def paymentFailPercentHive(): Unit = {
@@ -41,12 +41,14 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
         
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding number of transaction failures and successes...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         var result = hiveStatement.executeQuery(query)
+
+        println("Success\tOccurrences")
         while(result.next()){
             if(result.getString(1) == "N" || result.getString(1) == "Y"){
                 System.out.println(result.getString(1) + "\t" + result.getString(2))
             }
         }
-        println("############################################################")
+        println("\n############################################################")
     }
 
     def commonPaymentFail(): Unit = {
@@ -60,7 +62,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
                           ORDER BY occurrences DESC LIMIT 1""")
 
         df2.show()
-        println("############################################################")
+        println("\n############################################################")
     }
 
     def commonPaymentFailHive(): Unit = {
@@ -73,9 +75,10 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
 
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding most common reason for payment failure...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         var listReasons = hiveStatement.executeQuery(queryList)
+        println("Failure Reason\t\tOccurrences")
         if(listReasons.next()){
             System.out.println(listReasons.getString(1) + "\t" + listReasons.getString(2))
         }
-        println("############################################################")
+        println("\n############################################################")
     }
  }

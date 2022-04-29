@@ -28,28 +28,36 @@ class Analysis3(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
     // min
     def transactionMinAmount(): Unit = {
         df1.createOrReplaceTempView("MinAmount")
-        val df2 = spark.sql(s"SELECT customer_id, customer_name, COUNT(order_id) as `total_orders`, SUM(price * qty) as `total_price` FROM MinAmount GROUP BY customer_id, customer_name ORDER BY total_price")
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Minimum Transaction Amount...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        val df2 = spark.sql(s"SELECT customer_id, customer_name, COUNT(order_id) as `total_orders`, SUM(price * qty) as `total_price` FROM MinAmount GROUP BY customer_id, customer_name ORDER BY total_price LIMIT 1")
         df2.show()
+        println("\n############################################################")
     }
 
     def transactionMinAmountHive(): Unit = {
-         val query = s"""SELECT customer_id, customer_name, COUNT(order_id) as `total_orders`, SUM(price * qty) as `total_price`
-                         FROM $tableName
-                         GROUP BY customer_id, customer_name
-                         ORDER BY total_price
+        val query = s"""SELECT customer_id, customer_name, COUNT(order_id) as `total_orders`, SUM(price * qty) as `total_price`
+                        FROM $tableName
+                        GROUP BY customer_id, customer_name
+                        ORDER BY total_price
                     """
+
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Minimum Transaction Amount...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         val result = hiveStatement.executeQuery(query)   
-        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the minimum transaction amount\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        
+        println("Customer ID\tCustomer Name\tOrders\tTotal Spent")
         if (result.next()) {
-            System.out.println(f"${result.getString(1)}\t${result.getString(2)}\t${result.getString(3)}\t${"$" + result.getString(4).toString}")
+            System.out.println(f"${result.getString(1)}\t\t${result.getString(2)}\t${result.getString(3)}\t$$${result.getString(4).toFloat}%.2f")
         }
+        println("\n############################################################")
     }
 
     // max
     def transactionMaxAmount(): Unit = {
         df1.createOrReplaceTempView("MaxAmount")
-        val df3 = spark.sql(s"SELECT customer_id, customer_name, COUNT(order_id) as `total_orders`, SUM(price * qty) as `total_price` FROM MaxAmount GROUP BY customer_id, customer_name ORDER BY total_price DESC")
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Maximum Transaction Amount...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        val df3 = spark.sql(s"SELECT customer_id, customer_name, COUNT(order_id) as `total_orders`, SUM(price * qty) as `total_price` FROM MaxAmount GROUP BY customer_id, customer_name ORDER BY total_price DESC LIMIT 1")
         df3.show()
+        println("\n############################################################")
     }
 
     def transactionMaxAmountHive(): Unit = {
@@ -58,18 +66,24 @@ class Analysis3(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
                         GROUP BY customer_id, customer_name
                         ORDER BY total_price DESC
                     """
+
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Maximum Transaction Amount...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         val result = hiveStatement.executeQuery(query)
-        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the maximum transaction amount\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        
+        println("Customer ID\tCustomer Name\tOrders\tTotal Spent")
         if (result.next()) {
-            System.out.println(f"${result.getString(1)}\t${result.getString(2)}\t${result.getString(3)}\t${"$" + result.getString(4).toString}")
+            System.out.println(f"${result.getString(1)}\t\t${result.getString(2)}\t${result.getString(3)}\t$$${result.getString(4).toFloat}%.2f")
         }
+        println("\n############################################################")
     }
 
     // avg
     def transactionAvgAmount(): Unit =  {
         df1.createOrReplaceTempView("AvgAmount")
-        val df4 = spark.sql(s"SELECT COUNT(order_id) as `total_orders`, ROUND(AVG(x.totalPrice)) as `avg_txn_amt` FROM (SELECT order_id, COUNT(order_id) as totalOrders, customer_id,  SUM(price * qty) as totalPrice FROM avgAmount GROUP BY customer_id, order_id ORDER BY totalPrice DESC) as x ORDER BY avg_txn_amt")
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Average Transaction Amount...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        val df4 = spark.sql(s"SELECT COUNT(order_id) as `total_orders`, ROUND(AVG(x.totalPrice)) as `avg_txn_amt` FROM (SELECT order_id, COUNT(order_id) as totalOrders, customer_id,  SUM(price * qty) as totalPrice FROM avgAmount GROUP BY customer_id, order_id ORDER BY totalPrice DESC) as x ORDER BY avg_txn_amt LIMIT 1")
         df4.show()
+        println("\n############################################################")
     }
 
     def transactionAvgAmountHive(): Unit = {
@@ -83,11 +97,15 @@ class Analysis3(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
                         ) as x
                         ORDER BY avg_txn_amt
                         """
-            val result = hiveStatement.executeQuery(query)
-            println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the average transaction amount\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            if (result.next()) {
-                System.out.println(f"${result.getString(1)}\t${"$" + result.getString(2).toString}")
-            }
+
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Average Transaction Amount...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        val result = hiveStatement.executeQuery(query)
+        
+        println("Total Orders\tAverage Spent")
+        if (result.next()) {
+            System.out.println(f"${result.getString(1)}\t\t$$${result.getString(2).toFloat}%.2f")
+        }
+        println("\n############################################################")
     }
 
     // Customer with most products in their order / money spent
@@ -95,8 +113,10 @@ class Analysis3(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
 
     def mostProductsPerOrder(): Unit = {
         df1.createOrReplaceTempView("MostProducts")
-        val df5 = spark.sql(s"SELECT customer_id, customer_name, COUNT(order_id) as `total_orders`, SUM(qty) AS `total_amount` FROM MostProducts GROUP BY customer_id, customer_name ORDER BY total_amount DESC")
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Customer who Ordered the Most Products...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        val df5 = spark.sql(s"SELECT customer_id, customer_name, COUNT(order_id) as `total_orders`, SUM(qty) AS `total_amount` FROM MostProducts GROUP BY customer_id, customer_name ORDER BY total_amount DESC LIMIT 1")
         df5.show()
+        println("\n############################################################")
     }
 
     def mostProductsPerOrderHive(): Unit = {
@@ -105,10 +125,14 @@ class Analysis3(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
                         GROUP BY customer_id, customer_name
                         ORDER BY total_amount DESC
                     """
+
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the Customer who Ordered the Most Products...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         val result = hiveStatement.executeQuery(query)
-        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Finding the most Products per Order~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        
+        println("Customer ID\tCustomer Name\tOrders\tTotal Products")
         if(result.next()) {
-            System.out.println(f"${result.getString(1)}\t${result.getString(2)}\t${result.getString(3)}\t${result.getString(4)}")
+            System.out.println(f"${result.getString(1)}\t\t${result.getString(2)}\t${result.getString(3)}\t${result.getString(4)}")
         }
+        println("\n############################################################")
     }
 }

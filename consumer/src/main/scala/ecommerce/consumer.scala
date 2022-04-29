@@ -95,12 +95,41 @@ object consumer {
     }
 
     def menu(): Int = {
-        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        println("Analize with Hive or Spark?")
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        println("Analyze with Hive or Spark?")
         println("1. Hive")
         println("2. Spark")
         println("0. Exit")
-        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+        var option = -1
+
+        try {
+            option = readLine.toInt
+        }
+        catch {
+            case _: Throwable => option = -1
+        }
+
+        return option
+    }
+
+    def functionMenu(): Int = {
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        println("Which analysis you would like to run?")
+        println("1.  Most Popular Product")
+        println("2.  Highest Revenue Product")
+        println("3.  Countries by Desending Total Revenue")
+        println("4.  Customer Who Spent the Least")
+        println("5.  Customer Who Spent the Most")
+        println("6.  Average Amount Spent")
+        println("7.  Customer Who Ordered the Most Products")
+        println("8.  Most Popular Payment Type")
+        println("9.  Highest Revenue Payment Type")
+        println("10. Transaction Failures and Successes")
+        println("11. Most Common Reason for Payment Failure")
+        println("0.  Back to Menu")
+        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         var option = -1
 
@@ -115,79 +144,164 @@ object consumer {
     }
 
     def runHiveFunctions() {
-        drakeFunctions.mostPopularProductByCategoryHive()
-        print("Continue...")
-        readLine
-        drakeFunctions.highestRevenueProductHive()
-        print("Continue...")
-        readLine
-        mattFunctions.highestRevenueByCountryHive()
-        print("Continue...")
-        readLine
-
-        javierFunctions.transactionMinAmountHive()
-        print("Continue...")
-        readLine
-        javierFunctions.transactionMaxAmountHive()
-        print("Continue...")
-        readLine
-        javierFunctions.transactionAvgAmountHive()
-        print("Continue...")
-        readLine
-        javierFunctions.mostProductsPerOrderHive()
-        print("Continue...")
-        readLine
         
-        davidFunctions.mostPopularPaymentTypeHive()
-        print("Continue...")
-        readLine
-        davidFunctions.paymentTypeWithHighestRevenueHive()
-        print("Continue...")
-        readLine
+        var continueLoop = true
 
-        nickFunctions.paymentFailPercentHive()
-        print("Continue...")
-        readLine
-        nickFunctions.commonPaymentFailHive()
-        print("Continue...")
-        readLine
+        while (continueLoop) {
+
+            val optionSelected = functionMenu()
+
+            if (optionSelected == 0) {
+                println("Going Back...")
+                continueLoop = false
+            }
+
+            if (optionSelected == 1) {
+                drakeFunctions.mostPopularProductByCategoryHive()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 2) {
+                drakeFunctions.highestRevenueProductHive()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 3) {
+                mattFunctions.highestRevenueByCountryHive()
+                print("Continue...")
+                readLine
+            }
+            
+            if (optionSelected == 4) {
+                javierFunctions.transactionMinAmountHive()
+                print("Continue...")
+                readLine
+            }
+            
+            if (optionSelected == 5) {
+                javierFunctions.transactionMaxAmountHive()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 6) {
+                javierFunctions.transactionAvgAmountHive()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 7) {
+                javierFunctions.mostProductsPerOrderHive()
+                print("Continue...")
+                readLine
+            }
+            
+            if (optionSelected == 8) {
+                davidFunctions.mostPopularPaymentTypeHive()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 9) {
+                davidFunctions.paymentTypeWithHighestRevenueHive()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 10) {
+                nickFunctions.paymentFailPercentHive()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 11) {
+                nickFunctions.commonPaymentFailHive()
+                print("Continue...")
+                readLine
+            }
+        }
     }
 
     def runSparkFunctions() {
-        drakeFunctions.mostPopularProductByCategory()
-        print("Continue...")
-        readLine
-        drakeFunctions.highestRevenueProduct()
-        print("Continue...")
-        readLine
-
-        mattFunctions.highestRevenueByCountry()
-        print("Continue...")
-        readLine
-
-        javierFunctions.transactionMinAmount()
-        print("Continue...")
-        readLine
-        javierFunctions.transactionMaxAmount()
-        print("Continue...")
-        readLine
-        javierFunctions.transactionAvgAmount()
-        print("Continue...")
-        readLine
         
+        var continueLoop = true
 
-        davidFunctions.mostPopularPaymentType()
-        print("Continue...")
-        readLine
-        davidFunctions.paymentTypeWithHighestRevenue()
-        print("Continue...")
-        readLine
+        while (continueLoop) {
 
-        nickFunctions.paymentFailPercent()
-        print("Continue...")
-        readLine
-        nickFunctions.commonPaymentFail()
-        print("Continue...")
-        readLine
+            val optionSelected = functionMenu()
+
+            if (optionSelected == 0) {
+                println("Going Back...")
+                continueLoop = false
+            }
+
+            if (optionSelected == 1) {
+                drakeFunctions.mostPopularProductByCategory()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 2) {
+                drakeFunctions.highestRevenueProduct()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 3) {
+                mattFunctions.highestRevenueByCountry()
+                print("Continue...")
+                readLine
+            }
+            
+            if (optionSelected == 4) {
+                javierFunctions.transactionMinAmount()
+                print("Continue...")
+                readLine
+            }
+            
+            if (optionSelected == 5) {
+                javierFunctions.transactionMaxAmount()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 6) {
+                javierFunctions.transactionAvgAmount()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 7) {
+                javierFunctions.mostProductsPerOrder()
+                print("Continue...")
+                readLine
+            }
+            
+            if (optionSelected == 8) {
+                davidFunctions.mostPopularPaymentType()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 9) {
+                davidFunctions.paymentTypeWithHighestRevenue()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 10) {
+                nickFunctions.paymentFailPercent()
+                print("Continue...")
+                readLine
+            }
+
+            if (optionSelected == 11) {
+                nickFunctions.commonPaymentFail()
+                print("Continue...")
+                readLine
+            }
+        }
     }
 }

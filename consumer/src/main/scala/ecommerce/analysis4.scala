@@ -26,7 +26,7 @@ class Analysis4(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         df1.createOrReplaceTempView("popularPaymentType")
         val df2 = spark.sql(s"SELECT payment_type, COUNT(payment_type) as occurrence FROM popularPaymentType GROUP BY payment_type ORDER BY  occurrence DESC LIMIT 1")
         df2.show()
-        println("############################################################")
+        println("\n############################################################")
     }
     
     def mostPopularPaymentTypeHive() {
@@ -39,11 +39,11 @@ class Analysis4(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the most Popular Payment Type...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         val result = hiveStatement.executeQuery(query)
-        println("Payment Type\t\tOccurences")
+        println("Payment Type\tOccurences")
         if (result.next()) {
             System.out.println(result.getString(1) + "\t\t" + result.getString(2));
         }
-        println("############################################################")
+        println("\n############################################################")
     }
 
     def paymentTypeWithHighestRevenue() {
@@ -51,7 +51,7 @@ class Analysis4(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
         df1.createOrReplaceTempView("paymentRevenue")
         val df2 = spark.sql(s"SELECT payment_type, SUM(qty * price) as revenue FROM paymentRevenue GROUP BY payment_type ORDER BY revenue DESC LIMIT 1")
         df2.show()
-        println("############################################################")
+        println("\n############################################################")
     }
         
     def paymentTypeWithHighestRevenueHive() {
@@ -64,10 +64,10 @@ class Analysis4(spark: SparkSession, hiveStatement: Statement, dataFrame: DataFr
 
         val result = hiveStatement.executeQuery(query)
         
-        println("Payment Type\t\tRevenue")
+        println("Payment Type\tRevenue")
         if (result.next()) {
-            System.out.println(f"${result.getString(1)}\t$$${result.getString(2).toFloat}%.2f");
+            System.out.println(f"${result.getString(1)}\t\t$$${result.getString(2).toFloat}%.2f");
         }
-        println("############################################################")
+        println("\n############################################################")
     }
 }
