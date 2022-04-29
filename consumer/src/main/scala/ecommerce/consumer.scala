@@ -124,7 +124,19 @@ object consumer {
         mattFunctions.highestRevenueByCountryHive()
         print("Continue...")
         readLine
-        //javierFunctions.
+
+        javierFunctions.transactionMinAmountHive()
+        print("Continue...")
+        readLine
+        javierFunctions.transactionMaxAmountHive()
+        print("Continue...")
+        readLine
+        javierFunctions.transactionAvgAmountHive()
+        print("Continue...")
+        readLine
+        javierFunctions.mostProductsPerOrderHive()
+        print("Continue...")
+        readLine
         
         davidFunctions.mostPopularPaymentTypeHive()
         print("Continue...")
@@ -153,7 +165,16 @@ object consumer {
         print("Continue...")
         readLine
 
-        //javierFunctions.
+        javierFunctions.transactionMinAmount()
+        print("Continue...")
+        readLine
+        javierFunctions.transactionMaxAmount()
+        print("Continue...")
+        readLine
+        javierFunctions.transactionAvgAmount()
+        print("Continue...")
+        readLine
+        
 
         davidFunctions.mostPopularPaymentType()
         print("Continue...")
