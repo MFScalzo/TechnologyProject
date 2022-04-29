@@ -41,12 +41,16 @@ class HiveClient {
             connection = DriverManager.getConnection(connectionString, "", "")
             val statement = connection.createStatement()
 
-            println("Dropping Database if it exists...")
-            var query = s"DROP DATABASE IF EXISTS $dataBaseName CASCADE"
+            // println("Dropping Database if it exists...")
+            // var query = s"DROP DATABASE IF EXISTS $dataBaseName CASCADE"
+            // statement.execute(query)
+
+            println("Creating the Database...")
+            var query = s"CREATE DATABASE IF NOT EXISTS $dataBaseName"
             statement.execute(query)
 
-            println("Createing the Database...")
-            query = s"CREATE DATABASE $dataBaseName"
+            println("Dropping old vanquish Table...")
+            query = s"DROP TABLE IF EXISTS $tableName"
             statement.execute(query)
             
             println("Creating new table...")
