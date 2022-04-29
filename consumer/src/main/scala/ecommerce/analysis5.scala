@@ -22,17 +22,25 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
     def paymentFailPercent(): Unit = {
         //Count Number of TXN that Pass and Fail
         dataframe.createOrReplaceTempView("FailPercent")
-        println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the number of failures and successes...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        println(s"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the number of failures and successes...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         val df2 = spark.sql(s"""SELECT payment_txn_success, COUNT(payment_txn_success) AS occurrences
                                 FROM FailPercent
+                                WHERE NOT payment_txn_success = ""
                                 GROUP BY payment_txn_success
                                 ORDER BY occurrences DESC""")
+
         
-        
-        df2.show(2)
-        println("\n############################################################")
+        df2.show()
+        val x = df2.first().getLong(1)
+        var pass: Int = x.toInt
+        val y = df2.sort("occurrences").first().getLong(1)
+        var fail: Int = y.toInt
+        var total: Float = fail + pass
+        var percent = (fail/total)*100
+        println(f"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPayments failed ${percent}%.1f%% of the time")
+        println("############################################################")
     }
-    
+
     def paymentFailPercentHive(): Unit = {
         //Count Number of TXN that Pass and Fail
         var query = s"""SELECT payment_txn_success, COUNT(payment_txn_success) 
@@ -40,15 +48,27 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
                     GROUP BY payment_txn_success"""
         
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding number of transaction failures and successes...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        var result = hiveStatement.executeQuery(query)
-
-        println("Success\tOccurrences")
+        val result = hiveStatement.executeQuery(query)      
+        var tempN = ""
+        var tempY = ""
+        println(s"Success(Y/N)\tOccurrences")
         while(result.next()){
-            if(result.getString(1) == "N" || result.getString(1) == "Y"){
-                System.out.println(result.getString(1) + "\t" + result.getString(2))
+            if(result.getString(1) == "N"){
+                System.out.println(s"${result.getString(1)}\t\t${result.getString(2)}")
+                tempN = result.getString(2)
+            }
+            else if(result.getString(1) == "Y"){
+                System.out.println(s"${result.getString(1)}\t\t${result.getString(2)}")
+                tempY = result.getString(2)
             }
         }
-        println("\n############################################################")
+        var fail = tempN.toInt
+        var pass = tempY.toInt
+        val total: Float = pass + fail
+        val percent = (fail/total)*100
+        println(f"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPayments failed ${percent}%.1f%% of the time.")
+        println("############################################################")
+
     }
 
     def commonPaymentFail(): Unit = {
@@ -61,6 +81,7 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
                           GROUP BY failure_reason
                           ORDER BY occurrences DESC LIMIT 1""")
 
+        
         df2.show()
         println("\n############################################################")
     }
@@ -75,9 +96,8 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
 
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding most common reason for payment failure...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         var listReasons = hiveStatement.executeQuery(queryList)
-        println("Failure Reason\t\tOccurrences")
         if(listReasons.next()){
-            System.out.println(listReasons.getString(1) + "\t" + listReasons.getString(2))
+            System.out.println(s"Reason for Failure\tOccurrences\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n${listReasons.getString(1)}\t${listReasons.getString(2)}")
         }
         println("\n############################################################")
     }
