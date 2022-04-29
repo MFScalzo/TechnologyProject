@@ -24,17 +24,19 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
         dataframe.createOrReplaceTempView("FailPercent")
         val df2 = spark.sql(s"""SELECT payment_txn_success, COUNT(payment_txn_success) AS occurrences
                                 FROM FailPercent
+                                WHERE NOT payment_txn_success = ""
                                 GROUP BY payment_txn_success
                                 ORDER BY occurrences DESC""")
 
         println(s"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding the number of failures and successes...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        df2.show(2)
-        val x = df2.select("occurrences").where("payment_txn_success == F")
-        val fail: Int = x.first().getInt(1)
-        val y = df2.select("occurrences").where("payment_txn_success == Y")
-        val pass: Int = y.first().getInt(1)
-        val percent: Float = (fail / (pass + fail))*100
-        println(s"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPayments failed ${percent%.2f}% of the time")
+        df2.show()
+        val x = df2.first().getLong(1)
+        var pass: Int = x.toInt
+        val y = df2.sort("occurrences").first().getLong(1)
+        var fail: Int = y.toInt
+        var total: Float = fail + pass
+        var percent = (fail/total)*100
+        println(s"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPayments failed ${percent}% of the time")
         println("############################################################")
     }
 
@@ -50,17 +52,18 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
         var pass = 0
         println(s"Success(Y/N)\tOccurrences\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         while(result.next()){
-            if(result.getString(1) == 'N'){ //|| result.getString(1) == 'Y'){
+            if(result.getString(1) == 'N'){
                 System.out.println(s"${result.getString(1)}\t\t${result.getString(2)}")
-                fail = result.getInt(2)
+                fail = result.getLong(2).toInt
             }
             else if(result.getString(1) == 'Y'){
                 System.out.println(f"${result.getString(1)}\t\t${result.getString(2)}")
-                pass = result.getInt(2)
+                pass = result.getLong(2).toInt
             }
         }
-        val percent: Float = (fail /(pass + fail))*100
-        println(s"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPayments failed ${percent%.2f}% of the time.")
+        val total: Float = pass + fail
+        val percent = (fail/total)*100
+        println(s"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPayments failed ${percent}% of the time.")
         println("############################################################")
 
     }
