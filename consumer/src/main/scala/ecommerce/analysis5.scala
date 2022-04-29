@@ -47,20 +47,23 @@ class Analysis5(spark: SparkSession, hiveStatement: Statement, dataframe: DataFr
                     GROUP BY payment_txn_success"""
         
         println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nFinding number of transaction failures and successes...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        var result = hiveStatement.executeQuery(query)      
-        var fail = 0
-        var pass = 0
+        val result = hiveStatement.executeQuery(query)      
+        var tempN = ""
+        var tempY = ""
         println(s"Success(Y/N)\tOccurrences\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        //println(result)
         while(result.next()){
-            if(result.getString(1) == 'N'){
+            if(result.getString(1) == "N"){
                 System.out.println(s"${result.getString(1)}\t\t${result.getString(2)}")
-                fail = result.getLong(2).toInt
+                tempN = result.getString(2)
             }
-            else if(result.getString(1) == 'Y'){
-                System.out.println(f"${result.getString(1)}\t\t${result.getString(2)}")
-                pass = result.getLong(2).toInt
+            else if(result.getString(1) == "Y"){
+                System.out.println(s"${result.getString(1)}\t\t${result.getString(2)}")
+                tempY = result.getString(2)
             }
         }
+        var fail = tempN.toInt
+        var pass = tempY.toInt
         val total: Float = pass + fail
         val percent = (fail/total)*100
         println(s"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPayments failed ${percent}% of the time.")
