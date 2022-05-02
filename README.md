@@ -1,13 +1,13 @@
 # Technology Project
 
+## Project Description
+This project had to main parts, the Producer and the Consumer. The Producer generates random data that resembles transaction from a ecommerce site, saves it to a CSV, and then uploads it to HDFS and Hive. The Consumer takes the generated data and provides meaningful analysis options using Hive and Spark.
 
-## __Producer__
+## Technologies Used
 
-The __Producer__ generates a random data that resembles transaction from a ecommerce site, and uploads it to HDFS and Hive.
+## Features
 
-## __Consumer__
-
-The __Consumer__ takes the generated data and provides meaningful analysis options using Hive and Spark.
+## Getting Started
 
 ## Usage
 
@@ -32,3 +32,14 @@ Move this file over to your VM with SCP:
     scp -P 2222 maria_dev@127.0.0.1:~/ecommerce/vanquish
 
 These programs were tested in VS Code using the Metals extension. In order to build, you will need to mount each executables parent project folder (`producer` and `consumer`) and run the `pacakge` command in the sbt shell on both of them individually. This will give you two .jar files in `producer/target/scala-2.11` and `consumer/target/scala-2.11`. Move these files over to your Hortonworks Sandbox HDP 2.6.5 VM and into a folder structure like this: `/home/maria_dev/ecommerce/vanquish/`. To run the use `spark-submit <.jar file> --class ecommerce.ecommerce`. Run the Producer first then the Consumer for desired results.
+
+## Contributors
+ - Matthew Scalzo
+ - Javier Zapata
+ - David Tennessee
+ - Drake Tubbs
+ - Nicholas Young
+
+
+## License
+This project uses the following license: [MIT License](https://github.com/MFScalzo/TechnologyProject/blob/main/LICENSE.txt)
