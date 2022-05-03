@@ -1,35 +1,59 @@
 # Technology Project
 
 ## Project Description
-This project had to main parts, the Producer and the Consumer. The Producer generates random data that resembles transaction from a ecommerce site, saves it to a CSV, and then uploads it to HDFS and Hive. The Consumer takes the generated data and provides meaningful analysis options using Hive and Spark.
+This project has two main programs: the Producer and the Consumer. The Producer generates randomized data that resembles transactions from an eCommerce site, saves this data to a CSV, and uploads it to HDFS and Hive. The Consumer works in conjunction with a CLI (Command Line Interface) application to grab the generated data and provide meaningful analysis options through queries using Hive and Spark.
 
 ## Technologies Used
+- Scala - version 2.13.6
+- Hadoop - version 2.6.5
+- Hive - version 2.4.8
+- Spark - version 2.4.3
+- SparkSQL - version 2.4.3
+- gitSCM - version 2.35.1 (+ Github)
 
 ## Features
+- Produce randomly generated data
+- Save Producer data into a CSV file
+- Operate the Consumer via a CLI (Command Line Interface) menu 
+- Perform queries and analysis on Hive snd Spark once data is stored into HDFS and Hive
 
 ## Getting Started
-First Clone this repository:
+Clone this repository:
 
-    clone https://github.com/MFScalzo/TechnologyProject.git
+    git clone https://github.com/MFScalzo/TechnologyProject.git
     
-In VS Code, make sure you have the metals extension. Open which ever program you want to build:
+In VS Code, be sure to have:
+- The Scala (Metals) extension by Scalameta
+- The Scala (sbt) extension by Lightbend 
 
-To open and build Producer, open the `producer` directory in VS Code's Open Folder Option
+Open the program you want to build:
 
-To open and build Consumer, open the `consumer` directory in VS Code's Open Folder Option
+- To open and build Producer, open the `producer` directory using the Open Folder Option in VS Code
 
-Then in the sbt shell build the .jar file:
+- To open and build Consumer, open the `consumer` directory using the Open Folder Option in VS Code
 
-    package
+In the sbt shell:
+
+- Compile using:
+
+        compile
+
+- Build the .jar file:
+
+        package
     
-This will create the .jar in the `target/scala-2.11/` folder.
+This will create the dedicated .jar in the `target/scala-2.11/` folder.
 
 Move this file over to your VM with SCP:
 
-    scp -P 2222 maria_dev@127.0.0.1:~/ecommerce/vanquish
+    scp -P 2222 maria_dev@127.0.0.1:~/ecommerce/tech_project
 
 ## Usage
-Move these files over to your Hortonworks Sandbox HDP 2.6.5 VM and into a folder structure like this: `/home/maria_dev/ecommerce/vanquish/`. To run the use `spark-submit <.jar file> --class ecommerce.ecommerce`. Run the Producer first then the Consumer for desired results.
+- Move these files over to your Hortonworks Sandbox HDP 2.6.5 VM and into a folder structure like this: `/home/maria_dev/ecommerce/tech_project/` 
+- In your terminal:
+    - To run the Producer, use: `spark-submit <(producer).jar file> --class ecommerce.ecommerce`
+    - To run the Consumer,  use: `spark-submit <(consumer).jar file>`
+- Note: The Producer <ins>must</ins> be run before the Consumer for desired results.
 
 ## Contributors
  - Matthew Scalzo
