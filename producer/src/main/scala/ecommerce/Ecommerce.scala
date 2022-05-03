@@ -15,7 +15,8 @@ object Ecommerce {
     val minCustomers = 1500
     val maxCustomers = 2000
     val maxOrdersPerCustomer = 3
-    val csvPath = "/home/maria_dev/ecommerce/vanquish/vanquishData.csv"
+    //val csvPath = "/home/maria_dev/ecommerce/vanquish/vanquishData.csv"
+    val csvPath = "/home/maria_dev/ecommerce/tech_project/vanquishData.csv"
     val hdfsPath = "hdfs://sandbox-hdp.hortonworks.com:8020/user/maria_dev/vanquish/vanquishData.csv"
     
     def main(args: Array[String]) {
