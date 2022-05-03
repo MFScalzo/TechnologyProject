@@ -12,10 +12,11 @@ This project has two main programs: the Producer and the Consumer. The Producer 
 - gitSCM - version 2.35.1 (+ Github)
 
 ## Features
-- Produce randomly generated data
-- Save Producer data into a CSV file
+- Produce randomly generated eCommerce data
+- Save generated data into a CSV file
+- Load generated data into Hive and HDFS
 - Operate the Consumer via a CLI (Command Line Interface) menu 
-- Perform queries and analysis on Hive snd Spark once data is stored into HDFS and Hive
+- Perform queries and analysis with Hive and Spark on the data that is stored in HDFS and Hive
 
 ## Getting Started
 Clone this repository:
@@ -44,23 +45,37 @@ In the sbt shell:
     
 This will create the dedicated .jar in the `target/scala-2.11/` folder.
 
-Move this file over to your VM with SCP:
+Create necessary folder structure in your Hortonworks Sandbox HDP 2.6.5 VM:
+
+    ssh -P 2222 maria_dev@127.0.0.1
+    cd ~
+    mkdir -p ecommerce/tech_project
+
+Move this file over to your Hortonworks Sandbox HDP 2.6.5 VM with SCP:
 
     scp -P 2222 maria_dev@127.0.0.1:~/ecommerce/tech_project
 
 ## Usage
-- Move these files over to your Hortonworks Sandbox HDP 2.6.5 VM and into a folder structure like this: `/home/maria_dev/ecommerce/tech_project/` 
-- In your terminal:
-    - To run the Producer, use: `spark-submit <(producer).jar file> --class ecommerce.ecommerce`
-    - To run the Consumer,  use: `spark-submit <(consumer).jar file>`
+- Navigate to the directory above:
+    
+        cd ~/ecommerce/tech_project/
+    
+- To run the Producer, use:
+        
+        spark-submit <producer file .jar>
+ 
+- To run the Consumer, use:
+
+        spark-submit <consumer file .jar>
+        
 - Note: The Producer <ins>must</ins> be run before the Consumer for desired results.
 
 ## Contributors
  - Matthew Scalzo
- - Javier Zapata
  - David Tennessee
  - Drake Tubbs
  - Nicholas Young
+ - Javier Zapata
 
 
 ## License
