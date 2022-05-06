@@ -4,7 +4,7 @@
 This project has two main programs: the Producer and the Consumer. The Producer generates randomized data that resembles transactions from an eCommerce site, saves this data to a CSV, and uploads it to HDFS and Hive. The Consumer works in conjunction with a CLI (Command Line Interface) application to grab the generated data and provide meaningful analysis options through queries using Hive and Spark.
 
 ## Technologies Used
-- Scala - version 2.13.6
+- Scala - version 2.11.8
 - Hadoop - version 2.6.5
 - Hive - version 2.4.8
 - Spark - version 2.4.3
