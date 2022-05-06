@@ -53,7 +53,7 @@ Create necessary folder structure in your Hortonworks Sandbox HDP 2.6.5 VM:
 
 Move this file over to your Hortonworks Sandbox HDP 2.6.5 VM with SCP:
 
-    scp -P 2222 maria_dev@127.0.0.1:~/ecommerce/tech_project
+    scp -P 2222 <file here> maria_dev@127.0.0.1:~/ecommerce/tech_project
 
 ## Usage
 - Navigate to the directory above:
